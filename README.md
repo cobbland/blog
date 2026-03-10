@@ -1,6 +1,6 @@
 # Blog
 
-A blog–including a back-end api, a client view, and an admin view–built as part of The Odin Project project, using TOOLS TKTK.
+A blog–including a back-end api, a client view, and an admin view–built as part of The Odin Project project. It uses [Express](https://expressjs.com/), [Prisma](), [Passport](), TKTK.
 
 ## To Do
 

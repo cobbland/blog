@@ -1,0 +1,25 @@
+{
+  "name": "blog",
+  "version": "0.0.1",
+  "description": "A blog–including a back-end api, a client view, and an admin view–built as part of The Odin Project project",
+  "workspaces": [
+    "apps/blog-api",
+    "apps/blog-admin",
+    "apps/blog-public"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cobbland/blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cobbland/blog/issues"
+  },
+  "homepage": "https://github.com/cobbland/blog#readme"
+}

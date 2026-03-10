@@ -1,10 +1,10 @@
-# blog-api
+# Blog
 
-A blog api, built as part of The Odin Project project, using TOOLS TKTK.
+A blog–including a back-end api, a client view, and an admin view–built as part of The Odin Project project, using TOOLS TKTK.
 
-# To Do
+## To Do
 
-- [ ] How you structure this project is up to you. Some people prefer separate GitHub repos for each of the three apps you will make, to keep them and their commit histories separate. Some people prefer a monorepo, with each app in their own directory within the same single repo.
+- [x] How you structure this project is up to you. Some people prefer separate GitHub repos for each of the three apps you will make, to keep them and their commit histories separate. Some people prefer a monorepo, with each app in their own directory within the same single repo.
 - [ ] Begin by designing your back end models and schemas. How you design it is up to you, but you might want to think through a few things:
     *   Your blog should have posts and comments, so think about the fields you are going to want to include for each of those.
     *   Are you going to require users to leave a username or email with their comments?

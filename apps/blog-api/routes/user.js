@@ -1,20 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const controller = require("../controllers/user");
 
 // get all users
-router.get("/", (req, res) => {
-    return res.send("HERE ARE ALL THE USERS"); // TKTK
-});
+router.get("/", controller.getUsers);
 
 // get single user by id
-router.get("/:userId", (req, res) => {
-    return res.send(`USER WITH ID ${req.params.userId}`); // TKTK
-});
+router.get("/:userId", controller.getUser);
 
 // get single user's posts by id
-router.get("/:userId/posts", (req, res) => {
-    return res.send(`ALL POSTS BY USER WITH ID ${req.params.userId}`); // TKTK
-});
+router.get("/:userId/posts", controller.getUserPosts);
 
 // get single user's comments
 router.get("/:userId/comments", (req, res) => {

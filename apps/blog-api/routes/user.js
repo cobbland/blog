@@ -12,14 +12,10 @@ router.get("/:userId", controller.getUser);
 router.get("/:userId/posts", controller.getUserPosts);
 
 // get single user's comments
-router.get("/:userId/comments", (req, res) => {
-    return res.send(`ALL COMMENTS BY USER WITH ID ${req.params.userId}`); // TKTK
-});
+router.get("/:userId/comments", controller.getUserComments);
 
 // create a user
-router.post("/", (req, res) => {
-    return res.send("CREATED A NEW USER"); // TKTK
-});
+router.post("/", controller.postUser);
 
 // edit a user after checking validation
 router.put("/:userId", (req, res) => {

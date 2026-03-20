@@ -1,4 +1,5 @@
 const { prisma } = require("../lib/prisma.js");
+const bcrypt = require("bcryptjs");
 
 async function getUsers(req, res) {
     try {
@@ -35,8 +36,50 @@ async function getUserPosts(req, res) {
     }
 }
 
+async function getUserComments(req, res) {
+    try {
+        const comments = await prisma.comment.findMany({
+            where: {
+                userId: +req.params.userId,
+            },
+        });
+        res.send(comments);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function postUser(req, res) {
+    try {
+        return; // TKTK need password hashing and such first
+        // also, how to make this RESTful? how to send data (username, password, etc)
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function putUser(req, res) {
+    try {
+        return; // TKTK
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function deleteUser(req, res) {
+    try {
+        return; // TKTK
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 module.exports = {
     getUsers,
     getUser,
     getUserPosts,
+    getUserComments,
+    postUser,
+    putUser,
+    deleteUser,
 };

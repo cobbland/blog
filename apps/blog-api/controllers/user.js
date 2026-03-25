@@ -1,12 +1,19 @@
 const { prisma } = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
+const { body, validationResult } = require("express-validator"); // Is this right? Refer to docs
+require("dotenv/config");
+const authorPass = process.env["AUTHOR_PASS"] || false;
+
+const validateUsername = [body("username").trim().notEmpty().escape()];
+
+const validatePassword = [body("password").notEmpty().isStrongPassword()];
 
 async function getUsers(req, res) {
     try {
         const users = await prisma.user.findMany();
         res.send(users);
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
@@ -19,7 +26,7 @@ async function getUser(req, res) {
         });
         res.send(user);
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
@@ -32,7 +39,7 @@ async function getUserPosts(req, res) {
         });
         res.send(posts);
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
@@ -45,16 +52,29 @@ async function getUserComments(req, res) {
         });
         res.send(comments);
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
 async function postUser(req, res) {
+    const valResult = validationResult(req);
+    if (!valResult.isEmpty()) {
+        return res.status(404).json({ errors: valResult.array() });
+    }
+    const { username, password, name, author } = req.body;
     try {
-        return; // TKTK need password hashing and such first
-        // also, how to make this RESTful? how to send data (username, password, etc)
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await prisma.user.create({
+            data: {
+                username: username,
+                password: password,
+                name: name || null,
+                author: author === authorPass ? true : false,
+            },
+        });
+        return res.send(user);
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
@@ -62,7 +82,7 @@ async function putUser(req, res) {
     try {
         return; // TKTK
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
@@ -70,11 +90,13 @@ async function deleteUser(req, res) {
     try {
         return; // TKTK
     } catch (err) {
-        console.log(err);
+        return res.status(404).json({ errors: err });
     }
 }
 
 module.exports = {
+    validateUsername,
+    validatePassword,
     getUsers,
     getUser,
     getUserPosts,

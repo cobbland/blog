@@ -15,7 +15,12 @@ router.get("/:userId/posts", controller.getUserPosts);
 router.get("/:userId/comments", controller.getUserComments);
 
 // create a user
-router.post("/", controller.postUser);
+router.post(
+    "/",
+    controller.validateUsername,
+    controller.validatePassword,
+    controller.postUser,
+);
 
 // edit a user after checking validation
 router.put("/:userId", (req, res) => {

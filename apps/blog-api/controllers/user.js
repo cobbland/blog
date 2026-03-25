@@ -2,7 +2,7 @@ const { prisma } = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator"); // Is this right? Refer to docs
 require("dotenv/config");
-const authorPass = process.env["AUTHOR_PASS"] || false;
+const authorPass = process.env.AUTHOR_PASS || false;
 
 const validateUsername = [body("username").trim().notEmpty().escape()];
 
@@ -57,8 +57,8 @@ async function getUserComments(req, res) {
 }
 
 async function postUser(req, res) {
-    const valResult = validationResult(req);
-    if (!valResult.isEmpty()) {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
         return res.status(404).json({ errors: valResult.array() });
     }
     const { username, password, name, author } = req.body;
@@ -67,7 +67,7 @@ async function postUser(req, res) {
         const user = await prisma.user.create({
             data: {
                 username: username,
-                password: password,
+                password: hashedPassword,
                 name: name || null,
                 author: author === authorPass ? true : false,
             },

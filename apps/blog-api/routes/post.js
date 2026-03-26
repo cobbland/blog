@@ -3,15 +3,16 @@ const router = express.Router();
 const controller = require("../controllers/post");
 const auth = require("../middleware/auth");
 const validator = require("../middleware/validators");
+const commentRouter = require("./comment");
+
+// Merge in comments router
+router.use("/:postId/comments", commentRouter);
 
 // get all posts
 router.get("/", controller.getPosts);
 
 // get single post by id
 router.get("/:postId", controller.getPost);
-
-// get single post's comments by id
-router.get("/:postId/comments", controller.getComments);
 
 // create a post after checking authorization (draft or published?)
 router.post(

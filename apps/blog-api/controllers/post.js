@@ -31,19 +31,6 @@ async function getPost(req, res) {
     }
 }
 
-async function getComments(req, res) {
-    try {
-        const comments = await prisma.comment.findMany({
-            where: {
-                postId: +req.params.postId,
-            },
-        });
-        return res.send(comments);
-    } catch (err) {
-        return res.status(404).json({ errors: err });
-    }
-}
-
 async function postPost(req, res) {
     const results = validationResult(req);
     if (!results.isEmpty()) {
@@ -110,7 +97,6 @@ async function deletePost(req, res) {
 module.exports = {
     getPosts,
     getPost,
-    getComments,
     postPost,
     putPost,
     deletePost,

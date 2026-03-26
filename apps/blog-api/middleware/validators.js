@@ -13,6 +13,7 @@ const validatePostContent = [body("content").optional()];
 const validatePostTitleOptional = [
     body("title").trim().notEmpty().escape().optional(),
 ];
+const validateComment = [body("content").trim().notEmpty().escape()];
 
 module.exports = {
     validatePassword,
@@ -22,4 +23,5 @@ module.exports = {
     validatePostTitle,
     validatePostContent,
     validatePostTitleOptional,
+    validateComment,
 };

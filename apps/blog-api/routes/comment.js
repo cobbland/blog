@@ -1,34 +1,21 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
+const controller = require("../controllers/comment");
+const validator = require("../middleware/validators");
 
-// get all comments
-router.get("/", (req, res) => {
-    return res.send("ALL COMMENTS"); // TKTK
-});
+// get all comments on post
+router.get("/", controller.getComments);
 
-// get a specific comment by id
-router.get("/:commentId", (req, res) => {
-    return res.send(`COMMENT WITH ID ${req.params.commentId}`); // TKTK
-});
+// post a comment on post
+router.post("/", validator.validateComment, controller.postComment);
 
-// edit a specific comment by id after checking authorization
-router.put("/:commentId", (req, res) => {
-    const authorized = true; // TKTK
-    if (authorized) {
-        return res.send(`EDITING COMMENT WITH ID ${req.params.commentId}`); // TKTK
-    } else {
-        return res.status(401).send("UNAUTHORIZED"); // TKTK
-    }
-});
+// get a specific comment by id on post
+router.get("/:commentId", controller.getComment); // TKTK
 
-// delete a specific comment by id after checking authorization
-router.delete("/:commentId", (req, res) => {
-    const authorized = true; // TKTK
-    if (authorized) {
-        return res.send(`DELETING COMMENT WITH ID ${req.params.commentId}`); // TKTK
-    } else {
-        return res.status(401).send("UNAUTHORIZED"); // TKTK
-    }
-});
+// edit a specific comment by id on post after checking authorization
+router.put("/:commentId", controller.putComment); // TKTK
+
+// delete a specific comment by id on post after checking authorization
+router.delete("/:commentId", controller.deleteComment); // TKTK
 
 module.exports = router;

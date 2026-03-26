@@ -89,7 +89,6 @@ app.get("/", (req, res) => {
 app.use("/auth", routes.auth);
 app.use("/users", routes.user);
 app.use("/posts", routes.post);
-app.use("/comments", routes.comment);
 
 app.listen(port, () => {
     console.log(`App running at http://localhost:${port}`);

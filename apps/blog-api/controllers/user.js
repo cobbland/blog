@@ -9,7 +9,6 @@ async function getUsers(req, res) {
         const users = await prisma.user.findMany({
             omit: {
                 password: true,
-                author: true,
             },
         });
         res.send(users);

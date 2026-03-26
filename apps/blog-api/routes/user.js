@@ -24,7 +24,7 @@ router.post(
     controller.postUser,
 );
 
-// edit a user after checking validation
+// edit a user after checking authorization
 router.put(
     "/:userId",
     auth.requireAuth,
@@ -34,7 +34,7 @@ router.put(
     controller.putUser,
 );
 
-// delete a user after checking validation
+// delete a user after checking authorization
 router.delete(
     "/:userId",
     auth.requireAuth,

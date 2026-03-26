@@ -1,16 +1,17 @@
 const { prisma } = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
-const { body, validationResult } = require("express-validator"); // Is this right? Refer to docs
+const { validationResult } = require("express-validator");
 require("dotenv/config");
 const authorPass = process.env.AUTHOR_PASS || false;
 
-const validateUsername = [body("username").trim().notEmpty().escape()];
-
-const validatePassword = [body("password").notEmpty().isStrongPassword()];
-
 async function getUsers(req, res) {
     try {
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany({
+            omit: {
+                password: true,
+                author: true,
+            },
+        });
         res.send(users);
     } catch (err) {
         return res.status(404).json({ errors: err });
@@ -34,7 +35,7 @@ async function getUserPosts(req, res) {
     try {
         const posts = await prisma.post.findMany({
             where: {
-                userId: +req.params.userId,
+                authorId: +req.params.userId,
             },
         });
         res.send(posts);
@@ -47,7 +48,7 @@ async function getUserComments(req, res) {
     try {
         const comments = await prisma.comment.findMany({
             where: {
-                userId: +req.params.userId,
+                authorId: +req.params.userId,
             },
         });
         res.send(comments);
@@ -57,9 +58,9 @@ async function getUserComments(req, res) {
 }
 
 async function postUser(req, res) {
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-        return res.status(404).json({ errors: valResult.array() });
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        return res.status(404).json({ errors: results.array() });
     }
     const { username, password, name, author } = req.body;
     try {
@@ -79,8 +80,38 @@ async function postUser(req, res) {
 }
 
 async function putUser(req, res) {
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        return res.status(404).json({ errors: results.array() });
+    }
+    const { username, password, name, author } = req.body;
+    const userData = {};
+    for (const [key, value] of Object.entries({
+        username,
+        password,
+        name,
+        author,
+    })) {
+        if (value !== undefined) {
+            if (key === "password") {
+                userData[key] = await bcrypt.hash(value, 10);
+            } else if (key === "author") {
+                if (value === authorPass) {
+                    userData[key] = true;
+                }
+            } else {
+                userData[key] = value;
+            }
+        }
+    }
     try {
-        return; // TKTK
+        const user = await prisma.user.update({
+            where: {
+                id: +req.user.id,
+            },
+            data: userData,
+        });
+        return res.send(user);
     } catch (err) {
         return res.status(404).json({ errors: err });
     }
@@ -88,15 +119,18 @@ async function putUser(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        return; // TKTK
+        const user = await prisma.user.delete({
+            where: {
+                id: +treq.user.id,
+            },
+        });
+        return res.send(user);
     } catch (err) {
         return res.status(404).json({ errors: err });
     }
 }
 
 module.exports = {
-    validateUsername,
-    validatePassword,
     getUsers,
     getUser,
     getUserPosts,

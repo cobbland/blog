@@ -1,15 +1,37 @@
-const { body, validationResult } = require("express-validator"); // Is this right? Refer to docs
 const passport = require("passport");
 
-const validateUsername = [body("username").trim().notEmpty().escape()];
+function isLoggedIn(req, res) {
+    return res.send(req.user);
+}
 
-const login = passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/auth",
-    failureMessage: true,
-});
+function login(req, res, next) {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(401).json({ errors: info.errors });
+        }
+        req.login(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.json({ user });
+        });
+    })(req, res, next);
+}
+
+function logout(req, res, next) {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.json({ message: "Logged out successfully" });
+    });
+}
 
 module.exports = {
-    validateUsername,
+    isLoggedIn,
     login,
+    logout,
 };

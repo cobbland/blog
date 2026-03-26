@@ -121,7 +121,7 @@ async function deleteUser(req, res) {
     try {
         const user = await prisma.user.delete({
             where: {
-                id: +treq.user.id,
+                id: +req.user.id,
             },
         });
         return res.send(user);

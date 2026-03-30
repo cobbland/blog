@@ -85,7 +85,7 @@ app.use(passport.session());
 app.use("/auth", routes.auth);
 app.use("/users", routes.user);
 app.use("/posts", routes.post);
-app.use((err, res, res, next) => {
+app.use((err, req, res, next) => {
     console.error(err);
     res.status(err.status || 500).json({ errors: err.message });
 });

@@ -18,7 +18,7 @@ const validateComment = [body("content").trim().notEmpty().escape()];
 function validationResults(req, res, next) {
     const results = validationResult(req);
     if (!results.isEmpty()) {
-        return res.status(404).json({ errors: results.array() });
+        return res.status(400).json({ errors: results.array() });
     }
     next();
 }

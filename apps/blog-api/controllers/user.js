@@ -14,7 +14,7 @@ async function getUsers(req, res) {
         });
         res.send(users);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -25,9 +25,12 @@ async function getUser(req, res) {
                 id: +req.params.userId,
             },
         });
+        if (!user) {
+            return res.status(404).json({ errors: ["Not found"] });
+        }
         res.send(user);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -40,7 +43,7 @@ async function getUserPosts(req, res) {
         });
         res.send(posts);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -53,7 +56,7 @@ async function getUserComments(req, res) {
         });
         res.send(comments);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -72,7 +75,7 @@ async function postUser(req, res) {
         });
         return res.send(user);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -110,7 +113,7 @@ async function putUser(req, res) {
         });
         return res.send(user);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -123,7 +126,7 @@ async function deleteUser(req, res) {
         });
         return res.send(user);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 

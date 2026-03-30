@@ -10,7 +10,7 @@ async function getPosts(req, res) {
         });
         return res.send(posts);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -27,7 +27,7 @@ async function getPost(req, res) {
         }
         return res.send(post);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -43,7 +43,7 @@ async function postPost(req, res) {
         });
         return res.send(post);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -69,7 +69,7 @@ async function putPost(req, res) {
         });
         return res.send(post);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -82,7 +82,7 @@ async function deletePost(req, res) {
         });
         return res.send(post);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 

@@ -10,7 +10,7 @@ async function getComments(req, res) {
         });
         return res.send(comments);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -27,7 +27,7 @@ async function getComment(req, res) {
         }
         return res.send(comment);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -43,7 +43,7 @@ async function postComment(req, res) {
         });
         return res.send(comment);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -59,7 +59,7 @@ async function putComment(req, res) {
         });
         return res.send(comment);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 
@@ -86,7 +86,7 @@ async function deleteComment(req, res) {
         });
         return res.send(deletedComment);
     } catch (err) {
-        return res.status(404).json({ errors: err });
+        return next(err);
     }
 }
 

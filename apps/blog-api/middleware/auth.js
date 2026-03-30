@@ -21,6 +21,13 @@ function requireAuthor(req, res, next) {
     next();
 }
 
+function requireAdmin(req, res, next) {
+    if (!req.user.admin) {
+        return res.status(401).json({ errors: ["Unauthorized"] });
+    }
+    next();
+}
+
 async function requireSameAuthor(req, res, next) {
     try {
         const post = await prisma.post.findUnique({
@@ -41,5 +48,6 @@ module.exports = {
     requireAuth,
     requireSameUser,
     requireAuthor,
+    requireAdmin,
     requireSameAuthor,
 };

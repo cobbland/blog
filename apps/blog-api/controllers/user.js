@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 require("dotenv/config");
 const authorPass = process.env.AUTHOR_PASS || false;
+const adminPass = process.env.ADMIN_PASS || false;
 
 async function getUsers(req, res) {
     try {
@@ -57,7 +58,7 @@ async function getUserComments(req, res) {
 }
 
 async function postUser(req, res) {
-    const { username, password, name, author } = req.body;
+    const { username, password, name, author, admin } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
@@ -66,6 +67,7 @@ async function postUser(req, res) {
                 password: hashedPassword,
                 name: name || null,
                 author: author === authorPass ? true : false,
+                admin: admin === adminPass ? true : false,
             },
         });
         return res.send(user);
@@ -88,6 +90,10 @@ async function putUser(req, res) {
                 userData[key] = await bcrypt.hash(value, 10);
             } else if (key === "author") {
                 if (value === authorPass) {
+                    userData[key] = true;
+                }
+            } else if (key === "admin") {
+                if (value === adminPass) {
                     userData[key] = true;
                 }
             } else {

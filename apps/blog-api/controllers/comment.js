@@ -36,7 +36,8 @@ async function postComment(req, res) {
         const comment = await prisma.comment.create({
             data: {
                 content: req.body.content,
-                author: +req.user.id || null,
+                authorId: req.user ? +req.user.id : null,
+                guestName: req.user ? null : req.body.guestName || null,
                 postId: +req.params.postId,
             },
         });
@@ -47,7 +48,11 @@ async function postComment(req, res) {
 }
 
 async function putComment(req, res) {
-    // TKTK
+    try {
+        // TKTK
+    } catch (err) {
+        return res.status(404).json({ errors: err });
+    }
 }
 
 async function deleteComment(req, res) {

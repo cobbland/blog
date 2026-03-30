@@ -49,14 +49,45 @@ async function postComment(req, res) {
 
 async function putComment(req, res) {
     try {
-        // TKTK
+        const comment = await prisma.comment.update({
+            where: {
+                id: +req.params.postId,
+            },
+            data: {
+                content: req.body.content,
+            },
+        });
+        return res.send(comment);
     } catch (err) {
         return res.status(404).json({ errors: err });
     }
 }
 
 async function deleteComment(req, res) {
-    // TKTK
+    try {
+        const comment = await prisma.comment.findUnique({
+            where: {
+                id: +req.params.commentId,
+            },
+            include: {
+                post: true,
+            },
+        });
+        if (
+            req.user.id != comment.post.authorId &&
+            req.user.id != comment.authorId
+        ) {
+            return res.status(401).json({ errors: ["Unauthorized"] });
+        }
+        const deletedComment = await prisma.comment.delete({
+            where: {
+                id: +req.params.commentId,
+            },
+        });
+        return res.send(deletedComment);
+    } catch (err) {
+        return res.status(404).json({ errors: err });
+    }
 }
 
 module.exports = {

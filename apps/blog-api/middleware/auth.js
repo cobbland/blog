@@ -44,10 +44,27 @@ async function requireSameAuthor(req, res, next) {
     }
 }
 
+async function requireSameCommenter(req, res, next) {
+    try {
+        const comment = await prisma.comment.findUnique({
+            where: {
+                id: +req.params.commentId,
+            },
+        });
+        if (req.user.id != comment.authorId) {
+            return res.status(401).json({ errors: ["Unauthorized"] });
+        }
+        next();
+    } catch {
+        return res.status(404).json({ errors: err });
+    }
+}
+
 module.exports = {
     requireAuth,
     requireSameUser,
     requireAuthor,
     requireAdmin,
     requireSameAuthor,
+    requireSameCommenter,
 };

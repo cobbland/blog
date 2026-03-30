@@ -1,7 +1,7 @@
 const { prisma } = require("../lib/prisma.js");
 const { validationResult } = require("express-validator");
 
-async function getPosts(req, res) {
+async function getPosts(req, res, next) {
     try {
         const posts = await prisma.post.findMany({
             where: {
@@ -14,7 +14,7 @@ async function getPosts(req, res) {
     }
 }
 
-async function getPost(req, res) {
+async function getPost(req, res, next) {
     try {
         const post = await prisma.post.findUnique({
             where: {
@@ -31,7 +31,7 @@ async function getPost(req, res) {
     }
 }
 
-async function postPost(req, res) {
+async function postPost(req, res, next) {
     try {
         const post = await prisma.post.create({
             data: {
@@ -47,7 +47,7 @@ async function postPost(req, res) {
     }
 }
 
-async function putPost(req, res) {
+async function putPost(req, res, next) {
     const { title, content, published, createdAt } = req.body;
     const postData = {};
     for (const [key, value] of Object.entries({
@@ -73,7 +73,7 @@ async function putPost(req, res) {
     }
 }
 
-async function deletePost(req, res) {
+async function deletePost(req, res, next) {
     try {
         const post = await prisma.post.delete({
             where: {

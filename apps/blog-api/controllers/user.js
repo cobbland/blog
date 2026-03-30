@@ -1,11 +1,10 @@
 const { prisma } = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
-const { validationResult } = require("express-validator");
 require("dotenv/config");
 const authorPass = process.env.AUTHOR_PASS || false;
 const adminPass = process.env.ADMIN_PASS || false;
 
-async function getUsers(req, res) {
+async function getUsers(req, res, next) {
     try {
         const users = await prisma.user.findMany({
             omit: {
@@ -18,11 +17,14 @@ async function getUsers(req, res) {
     }
 }
 
-async function getUser(req, res) {
+async function getUser(req, res, next) {
     try {
         const user = await prisma.user.findUnique({
             where: {
                 id: +req.params.userId,
+            },
+            omit: {
+                password: true,
             },
         });
         if (!user) {
@@ -34,7 +36,7 @@ async function getUser(req, res) {
     }
 }
 
-async function getUserPosts(req, res) {
+async function getUserPosts(req, res, next) {
     try {
         const posts = await prisma.post.findMany({
             where: {
@@ -47,7 +49,7 @@ async function getUserPosts(req, res) {
     }
 }
 
-async function getUserComments(req, res) {
+async function getUserComments(req, res, next) {
     try {
         const comments = await prisma.comment.findMany({
             where: {
@@ -60,7 +62,7 @@ async function getUserComments(req, res) {
     }
 }
 
-async function postUser(req, res) {
+async function postUser(req, res, next) {
     const { username, password, name, author, admin } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -73,20 +75,22 @@ async function postUser(req, res) {
                 admin: admin === adminPass ? true : false,
             },
         });
-        return res.send(user);
+        const { password: _password, ...userWithoutPassword } = user;
+        return res.json(userWithoutPassword);
     } catch (err) {
         return next(err);
     }
 }
 
-async function putUser(req, res) {
-    const { username, password, name, author } = req.body;
+async function putUser(req, res, next) {
+    const { username, password, name, author, admin } = req.body;
     const userData = {};
     for (const [key, value] of Object.entries({
         username,
         password,
         name,
         author,
+        admin,
     })) {
         if (value !== undefined) {
             if (key === "password") {
@@ -111,20 +115,22 @@ async function putUser(req, res) {
             },
             data: userData,
         });
-        return res.send(user);
+        const { password: _password, ...userWithoutPassword } = user;
+        return res.json(userWithoutPassword);
     } catch (err) {
         return next(err);
     }
 }
 
-async function deleteUser(req, res) {
+async function deleteUser(req, res, next) {
     try {
         const user = await prisma.user.delete({
             where: {
                 id: +req.user.id,
             },
         });
-        return res.send(user);
+        const { password: _password, ...userWithoutPassword } = user;
+        return res.json(userWithoutPassword);
     } catch (err) {
         return next(err);
     }

@@ -1,7 +1,7 @@
 const { prisma } = require("../lib/prisma.js");
 const { validationResult } = require("express-validator");
 
-async function getComments(req, res) {
+async function getComments(req, res, next) {
     try {
         const comments = await prisma.comment.findMany({
             where: {
@@ -14,7 +14,7 @@ async function getComments(req, res) {
     }
 }
 
-async function getComment(req, res) {
+async function getComment(req, res, next) {
     try {
         const comment = await prisma.post.findUnique({
             where: {
@@ -31,7 +31,7 @@ async function getComment(req, res) {
     }
 }
 
-async function postComment(req, res) {
+async function postComment(req, res, next) {
     try {
         const comment = await prisma.comment.create({
             data: {
@@ -47,7 +47,7 @@ async function postComment(req, res) {
     }
 }
 
-async function putComment(req, res) {
+async function putComment(req, res, next) {
     try {
         const comment = await prisma.comment.update({
             where: {
@@ -63,7 +63,7 @@ async function putComment(req, res) {
     }
 }
 
-async function deleteComment(req, res) {
+async function deleteComment(req, res, next) {
     try {
         const comment = await prisma.comment.findUnique({
             where: {

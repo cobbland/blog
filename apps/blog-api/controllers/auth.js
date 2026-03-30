@@ -16,7 +16,8 @@ function login(req, res, next) {
             if (err) {
                 return next(err);
             }
-            return res.json({ user });
+            const { password, ...userWithoutPassword } = user;
+            return res.json(userWithoutPassword);
         });
     })(req, res, next);
 }

@@ -57,10 +57,6 @@ async function getUserComments(req, res) {
 }
 
 async function postUser(req, res) {
-    const results = validationResult(req);
-    if (!results.isEmpty()) {
-        return res.status(404).json({ errors: results.array() });
-    }
     const { username, password, name, author } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -79,10 +75,6 @@ async function postUser(req, res) {
 }
 
 async function putUser(req, res) {
-    const results = validationResult(req);
-    if (!results.isEmpty()) {
-        return res.status(404).json({ errors: results.array() });
-    }
     const { username, password, name, author } = req.body;
     const userData = {};
     for (const [key, value] of Object.entries({

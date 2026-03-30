@@ -21,6 +21,7 @@ router.post(
     auth.requireAuthor,
     validator.validatePostTitle,
     validator.validatePostContent,
+    validator.validationResults,
     controller.postPost,
 );
 
@@ -31,6 +32,7 @@ router.put(
     auth.requireAuthor,
     auth.requireSameAuthor,
     validator.validatePostTitleOptional,
+    validator.validationResults,
     controller.putPost,
 );
 

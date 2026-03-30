@@ -32,10 +32,6 @@ async function getPost(req, res) {
 }
 
 async function postPost(req, res) {
-    const results = validationResult(req);
-    if (!results.isEmpty()) {
-        return res.status(404).json({ errors: results.array() });
-    }
     try {
         const post = await prisma.post.create({
             data: {
@@ -52,10 +48,6 @@ async function postPost(req, res) {
 }
 
 async function putPost(req, res) {
-    const results = validationResult(req);
-    if (!results.isEmpty()) {
-        return res.status(404).json({ errors: results.array() });
-    }
     const { title, content, published, createdAt } = req.body;
     const postData = {};
     for (const [key, value] of Object.entries({

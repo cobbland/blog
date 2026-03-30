@@ -32,7 +32,18 @@ async function getComment(req, res) {
 }
 
 async function postComment(req, res) {
-    // TKTK
+    try {
+        const comment = await prisma.comment.create({
+            data: {
+                content: req.body.content,
+                author: +req.user.id || null,
+                postId: +req.params.postId,
+            },
+        });
+        return res.send(comment);
+    } catch (err) {
+        return res.status(404).json({ errors: err });
+    }
 }
 
 async function putComment(req, res) {

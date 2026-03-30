@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 
 const validateUsername = [body("username").trim().notEmpty().escape()];
 const validatePassword = [body("password").notEmpty().isStrongPassword()];
@@ -15,6 +15,14 @@ const validatePostTitleOptional = [
 ];
 const validateComment = [body("content").trim().notEmpty().escape()];
 
+function validationResults(req, res, next) {
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        return res.status(404).json({ errors: results.array() });
+    }
+    next();
+}
+
 module.exports = {
     validatePassword,
     validatePasswordOptional,
@@ -24,4 +32,5 @@ module.exports = {
     validatePostContent,
     validatePostTitleOptional,
     validateComment,
+    validationResults,
 };

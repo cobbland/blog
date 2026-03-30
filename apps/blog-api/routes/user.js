@@ -21,6 +21,7 @@ router.post(
     "/",
     validator.validateUsername,
     validator.validatePassword,
+    validator.validationResults,
     controller.postUser,
 );
 
@@ -31,6 +32,7 @@ router.put(
     auth.requireSameUser,
     validator.validateUsernameOptional,
     validator.validatePasswordOptional,
+    validator.validationResults,
     controller.putUser,
 );
 

@@ -7,6 +7,9 @@ async function getComments(req, res, next) {
             where: {
                 postId: +req.params.postId,
             },
+            orderBy: {
+                createdAt: "asc",
+            },
         });
         return res.send(comments);
     } catch (err) {

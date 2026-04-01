@@ -10,6 +10,9 @@ async function getUsers(req, res, next) {
             omit: {
                 password: true,
             },
+            orderBy: {
+                username: "desc",
+            },
         });
         res.send(users);
     } catch (err) {

@@ -7,6 +7,9 @@ async function getPosts(req, res, next) {
             where: {
                 published: true,
             },
+            orderBy: {
+                createdAt: "desc",
+            },
         });
         return res.send(posts);
     } catch (err) {

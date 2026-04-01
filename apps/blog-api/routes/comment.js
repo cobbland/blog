@@ -27,6 +27,6 @@ router.put(
 );
 
 // delete a specific comment by id on post after checking authorization
-router.delete("/:commentId", auth.requireAuth, controller.deleteComment); // TKTK
+router.delete("/:commentId", auth.requireAuth, controller.deleteComment);
 
 module.exports = router;

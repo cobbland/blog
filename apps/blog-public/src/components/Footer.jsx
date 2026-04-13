@@ -1,11 +1,11 @@
-export default function Footer({ copyWrite }) {
+export default function Footer({ copyright }) {
     return (
         <footer>
             <a href="#top">TOP</a>
-            {copyWrite && (
+            {copyright && (
                 <>
                     {" "}
-                    | <a href={copyWrite.link}>{copyWrite.name}</a>
+                    | <a href={copyright.link}>{copyright.name}</a>
                 </>
             )}
         </footer>

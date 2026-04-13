@@ -1,10 +1,19 @@
+import { NavLink } from "react-router";
+
 export default function Nav({ pages }) {
     return (
         <nav className="nav-top">
             <ul>
                 {pages.map((page) => (
                     <li>
-                        <a href={page.link}>{page.title}</a>
+                        <NavLink
+                            to={page.link}
+                            className={({ isActive }) =>
+                                isActive ? "active" : ""
+                            }
+                        >
+                            {page.title}
+                        </NavLink>
                     </li>
                 ))}
             </ul>

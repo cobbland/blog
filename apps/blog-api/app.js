@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const session = require("express-session");
 const { prisma } = require("./lib/prisma");
@@ -14,6 +15,13 @@ const routes = require("./routes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL,
+        credentials: true,
+    }),
+);
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {

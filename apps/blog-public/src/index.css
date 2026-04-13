@@ -121,7 +121,8 @@ footer > a:hover {
 
 /* ---------- ARTICLE CONTENT ---------- */
 
-article p {
+article p,
+article div {
     margin: 1.5rem 0;
 }
 

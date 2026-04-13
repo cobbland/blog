@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { useParams } from "react-router";
 
-export default function Authors() {
-    const [authors, setAuthors] = useState(null);
+export default function Posts() {
+    const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { postId } = useParams();
 
     useEffect(() => {
         async function dataFetch() {
             try {
                 const response = await fetch(
-                    import.meta.env.VITE_API_URL + "/users",
+                    import.meta.env.VITE_API_URL + "/posts/" + postId,
                     {
                         mode: "cors",
                     },
@@ -18,7 +19,7 @@ export default function Authors() {
                     throw new Error(`Response status: ${response.status}`);
                 }
                 const result = await response.json();
-                setAuthors(result);
+                setPost(result);
             } catch (err) {
                 console.error(err.message);
             } finally {
@@ -26,29 +27,23 @@ export default function Authors() {
             }
         }
         dataFetch();
-    }, []);
+    }, [postId]);
 
     if (loading) {
         return (
             <article className="loading">
-                <h1>Authors</h1>
-                <ul>
-                    <li>Loading authors...</li>
-                </ul>
+                <h1>Loading...</h1>
+                <div>
+                    <p>Loading...</p>
+                </div>
             </article>
         );
     }
 
     return (
         <article>
-            <h1>Authors</h1>
-            {authors
-                .filter((user) => user.author == true)
-                .map((author) => (
-                    <li key={author.id}>
-                        <Link to={`/authors/${author.id}`}>{author.name}</Link>
-                    </li>
-                ))}
+            <h1>{post.title}</h1>
+            <div>{post.content}</div>
         </article>
     );
 }

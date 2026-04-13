@@ -5,7 +5,7 @@ export default function Nav({ pages }) {
         <nav className="nav-top">
             <ul>
                 {pages.map((page) => (
-                    <li>
+                    <li key={page.title}>
                         <NavLink
                             to={page.link}
                             className={({ isActive }) =>

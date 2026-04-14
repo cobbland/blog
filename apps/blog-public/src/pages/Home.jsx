@@ -1,4 +1,3 @@
-import Article from "../components/Article";
 import { siteData } from "../config";
 
 export default function Home() {

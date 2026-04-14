@@ -10,6 +10,7 @@
     --black: #1e1e1e;
     --white: #f5f5f5;
     --gray-light: #e5e5e5;
+    --gray-medium: #b2b2b2;
     --gray: #7f7f7f;
     --gray-dark: #4a4a4a;
 }
@@ -107,16 +108,20 @@ footer {
     border-top: 4px solid var(--black);
 }
 
-header > a,
-footer > a {
+header a,
+footer a {
     color: inherit;
     border: none;
     transition: color 0.1s ease;
 }
 
-header > a:hover,
-footer > a:hover {
+header a:hover,
+footer a:hover {
     color: var(--red);
+}
+
+header .breadcrumbs {
+    color: var(--gray-medium);
 }
 
 /* ---------- ARTICLE CONTENT ---------- */

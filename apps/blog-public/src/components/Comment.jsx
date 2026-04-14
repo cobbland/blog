@@ -1,36 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router";
+import { UsersContext } from "../context";
 
 export default function Comment({ comment }) {
-    const [author, setAuthor] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function dataFetch() {
-            try {
-                const responseAuthor = await fetch(
-                    import.meta.env.VITE_API_URL + "/users/" + comment.authorId,
-                    {
-                        mode: "cors",
-                    },
-                );
-                if (!responseAuthor.ok) {
-                    throw new Error(
-                        `Response status: ${responseAuthor.status}`,
-                    );
-                }
-                const resultAuthor = await responseAuthor.json();
-                setAuthor(resultAuthor);
-            } catch (err) {
-                console.error(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        dataFetch();
-    }, [comment.authorId]);
-
-    if (loading) return <div className="comment loading">⠀</div>;
+    const users = useContext(UsersContext);
+    const author = users.filter((user) => user.id == comment.authorId)[0];
 
     return (
         <>

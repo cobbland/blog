@@ -4,7 +4,7 @@ import { UsersContext } from "../context";
 
 export default function Comment({ comment }) {
     const users = useContext(UsersContext);
-    const author = users.filter((user) => user.id == comment.authorId)[0];
+    const author = users?.find((user) => user.id == comment.authorId);
 
     return (
         <>

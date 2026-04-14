@@ -330,8 +330,8 @@ li {
     margin: 0.5rem 0;
 }
 
-/* ---------- DURATION BADGES ---------- */
-.duration,
+/* ---------- INFO BADGES ---------- */
+.info,
 a + em {
     background-color: var(--gray-light);
     color: var(--gray-dark);
@@ -339,10 +339,12 @@ a + em {
     font-weight: 600;
     text-transform: uppercase;
     padding: 0.2rem 0.5rem;
+    margin-left: 0.4em;
     font-style: normal;
     letter-spacing: 0.02em;
     word-break: keep-all;
 }
+
 /* ---------- DIVE DETAILS ---------- */
 details.dive {
     margin: 1.5rem 0;

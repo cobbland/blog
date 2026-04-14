@@ -42,13 +42,17 @@ export default function Authors() {
     return (
         <article>
             <h1>Authors</h1>
-            {authors
-                .filter((user) => user.author == true)
-                .map((author) => (
-                    <li key={author.id}>
-                        <Link to={`/authors/${author.id}`}>{author.name}</Link>
-                    </li>
-                ))}
+            <ul>
+                {authors
+                    .filter((user) => user.author == true)
+                    .map((author) => (
+                        <li key={author.id}>
+                            <Link to={`/authors/${author.id}`}>
+                                {author.username}
+                            </Link>
+                        </li>
+                    ))}
+            </ul>
         </article>
     );
 }

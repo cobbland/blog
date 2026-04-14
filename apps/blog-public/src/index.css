@@ -347,14 +347,14 @@ li .info {
     margin-left: 0.4em;
 }
 
-/* ---------- DIVE DETAILS ---------- */
-details.dive {
+/* ---------- COMMENTS ---------- */
+details.comments {
     margin: 1.5rem 0;
     border: 2px solid var(--gray-light);
     font-size: 0.95rem;
 }
 
-details.dive summary {
+details.comments summary {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;
@@ -364,28 +364,33 @@ details.dive summary {
     transition: background-color 0.1s ease;
 }
 
-details.dive summary:hover {
+details.comments summary:hover {
     background-color: var(--gray-light);
 }
 
-details.dive[open] summary {
+details.comments[open] summary {
     border-bottom: 2px solid var(--gray-light);
     margin-bottom: 1rem;
     background-color: var(--gray-light);
 }
 
-details.dive ul,
-details.dive ol,
-details.dive p {
+details.comments ul,
+details.comments ol,
+details.comments p {
     margin: 0.5rem 0 1rem 0;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     list-style-type: none;
 }
 
-details.dive li {
+details.comments li {
     margin: 0.5rem 0;
     color: var(--gray-dark);
+}
+
+details.comments li .info {
+    margin-left: 0;
+    margin-right: 0.4em;
 }
 
 /* ---------- RESPONSIVE ADJUSTMENTS ---------- */

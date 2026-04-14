@@ -270,8 +270,7 @@ hr {
 }
 
 /* ---------- BUTTONS ---------- */
-.button,
-strong > a {
+.button {
     font-weight: 800;
     text-transform: uppercase;
     font-size: 1.1rem;
@@ -284,8 +283,7 @@ strong > a {
     transition: background-color 0.1s ease;
 }
 
-.button:hover,
-strong > a:hover {
+.button:hover {
     background-color: var(--red);
     color: var(--white);
     border-bottom: none;
@@ -391,6 +389,9 @@ details.comments li {
 details.comments li .info {
     margin-left: 0;
     margin-right: 0.4em;
+}
+.comments .button {
+    margin: 0 1.5rem 1rem;
 }
 
 /* ---------- RESPONSIVE ADJUSTMENTS ---------- */

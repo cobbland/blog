@@ -1,4 +1,5 @@
 import Comment from "./Comment";
+import CommentButton from "./CommentButton";
 
 export default function Comments({ comments }) {
     return (
@@ -11,6 +12,7 @@ export default function Comments({ comments }) {
                     </li>
                 ))}
             </ul>
+            <CommentButton />
         </details>
     );
 }

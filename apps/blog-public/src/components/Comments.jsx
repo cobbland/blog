@@ -1,7 +1,7 @@
 import Comment from "./Comment";
 import CommentButton from "./CommentButton";
 
-export default function Comments({ comments }) {
+export default function Comments({ comments, postId }) {
     return (
         <details className="comments">
             <summary>Comments</summary>
@@ -12,7 +12,7 @@ export default function Comments({ comments }) {
                     </li>
                 ))}
             </ul>
-            <CommentButton />
+            <CommentButton postId={postId} />
         </details>
     );
 }

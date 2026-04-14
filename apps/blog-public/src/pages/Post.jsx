@@ -83,7 +83,7 @@ export default function Posts() {
                 </span>
                 <div>{post.content}</div>
             </article>
-            {comments && <Comments comments={comments} />}
+            {comments && <Comments comments={comments} postId={postId} />}
         </>
     );
 }

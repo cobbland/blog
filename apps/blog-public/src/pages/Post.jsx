@@ -32,9 +32,9 @@ export default function Posts() {
     if (loading) {
         return (
             <article className="loading">
-                <h1>Loading...</h1>
+                <h1>⠀</h1>
                 <div>
-                    <p>Loading...</p>
+                    <p>⠀</p>
                 </div>
             </article>
         );

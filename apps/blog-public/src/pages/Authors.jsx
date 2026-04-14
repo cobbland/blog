@@ -31,9 +31,9 @@ export default function Authors() {
     if (loading) {
         return (
             <article className="loading">
-                <h1>Authors</h1>
+                <h1>⠀</h1>
                 <ul>
-                    <li>Loading authors...</li>
+                    <li>⠀</li>
                 </ul>
             </article>
         );

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 export default function Posts() {
     const [post, setPost] = useState(null);
+    const [author, setAuthor] = useState(null);
     const [loading, setLoading] = useState(true);
     const { postId } = useParams();
 
@@ -19,7 +20,20 @@ export default function Posts() {
                     throw new Error(`Response status: ${response.status}`);
                 }
                 const result = await response.json();
+                const responseAuthor = await fetch(
+                    import.meta.env.VITE_API_URL + "/users/" + result.authorId,
+                    {
+                        mode: "cors",
+                    },
+                );
+                if (!responseAuthor.ok) {
+                    throw new Error(
+                        `Response status: ${responseAuthor.status}`,
+                    );
+                }
+                const resultAuthor = await responseAuthor.json();
                 setPost(result);
+                setAuthor(resultAuthor);
             } catch (err) {
                 console.error(err.message);
             } finally {
@@ -43,6 +57,10 @@ export default function Posts() {
     return (
         <article>
             <h1>{post.title}</h1>
+            <span className="info">
+                By <Link to={"/authors/" + author.id}>{author.username}</Link>{" "}
+                on {new Date(post.createdAt).toLocaleDateString()}
+            </span>
             <div>{post.content}</div>
         </article>
     );

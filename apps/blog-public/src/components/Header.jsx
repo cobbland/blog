@@ -1,7 +1,9 @@
+import { Link } from "react-router";
+
 export default function Header({ siteName }) {
     return (
         <header>
-            <a href="/">{siteName}</a>
+            <Link to="/">{siteName}</Link>
         </header>
     );
 }

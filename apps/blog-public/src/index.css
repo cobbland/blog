@@ -331,18 +331,20 @@ li {
 }
 
 /* ---------- INFO BADGES ---------- */
-.info,
-a + em {
+.info {
     background-color: var(--gray-light);
     color: var(--gray-dark);
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     padding: 0.2rem 0.5rem;
-    margin-left: 0.4em;
     font-style: normal;
     letter-spacing: 0.02em;
     word-break: keep-all;
+}
+
+li .info {
+    margin-left: 0.4em;
 }
 
 /* ---------- DIVE DETAILS ---------- */

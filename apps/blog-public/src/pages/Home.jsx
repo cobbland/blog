@@ -1,6 +1,11 @@
 import Article from "../components/Article";
-import { content } from "../config";
+import { siteData } from "../config";
 
 export default function Home() {
-    return <Article content={content} />;
+    return (
+        <article>
+            <h1>{siteData.siteName}</h1>
+            <p>Welcome to {siteData.siteName}!</p>
+        </article>
+    );
 }

@@ -1,68 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router";
 import Comments from "../components/Comments";
 import Markdown from "react-markdown";
+import { PostsContext, UsersContext } from "../context";
 
 export default function Posts() {
-    const [post, setPost] = useState(null);
-    const [author, setAuthor] = useState(null);
-    const [comments, setComments] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState({
+        loading: true,
+        data: [],
+        error: null,
+    });
+    const { data: posts, loading: postsLoading } = useContext(PostsContext);
+    const { data: users, loading: usersLoading } = useContext(UsersContext);
     const { postId } = useParams();
+    const post = posts?.find((post) => post.id == postId);
+    const author = users?.find((user) => user.id == post?.authorId);
 
     useEffect(() => {
-        async function dataFetch() {
+        async function fetchComments() {
             try {
                 const response = await fetch(
-                    import.meta.env.VITE_API_URL + "/posts/" + postId,
-                    {
-                        mode: "cors",
-                    },
+                    import.meta.env.VITE_API_URL +
+                        "/posts/" +
+                        postId +
+                        "/comments",
                 );
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
                 const result = await response.json();
-                const responseAuthor = await fetch(
-                    import.meta.env.VITE_API_URL + "/users/" + result.authorId,
-                    {
-                        mode: "cors",
-                    },
-                );
-                if (!responseAuthor.ok) {
-                    throw new Error(
-                        `Response status: ${responseAuthor.status}`,
-                    );
-                }
-                const resultAuthor = await responseAuthor.json();
-                const responseComments = await fetch(
-                    import.meta.env.VITE_API_URL +
-                        "/posts/" +
-                        postId +
-                        "/comments",
-                    {
-                        mode: "cors",
-                    },
-                );
-                if (!responseComments.ok) {
-                    throw new Error(
-                        `Response status: ${responseComments.status}`,
-                    );
-                }
-                const resultComments = await responseComments.json();
-                setPost(result);
-                setAuthor(resultAuthor);
-                setComments(resultComments);
+                setComments({ loading: false, data: result });
             } catch (err) {
                 console.error(err.message);
-            } finally {
-                setLoading(false);
+                setComments({ loading: false, error: err });
             }
         }
-        dataFetch();
+        fetchComments();
     }, [postId]);
 
-    if (loading) {
+    if (postsLoading || usersLoading) {
         return (
             <article className="loading">
                 <h1>⠀</h1>
@@ -86,7 +62,11 @@ export default function Posts() {
                     <Markdown>{post.content}</Markdown>
                 </div>
             </article>
-            {comments && <Comments comments={comments} postId={postId} />}
+            {comments.data && !comments.loading ? (
+                <Comments comments={comments.data} postId={postId} />
+            ) : (
+                ""
+            )}
         </>
     );
 }

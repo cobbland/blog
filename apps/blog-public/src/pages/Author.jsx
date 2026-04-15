@@ -1,53 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router";
+import { UsersContext, PostsContext } from "../context";
 
 export default function Author() {
-    const [author, setAuthor] = useState(null);
-    const [posts, setPosts] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { data: posts, loading: postsLoading } = useContext(PostsContext);
+    const { data: users, loading: usersLoading } = useContext(UsersContext);
     const { authorId } = useParams();
+    const author = users?.find((user) => user.id == authorId);
 
-    useEffect(() => {
-        async function dataFetch() {
-            try {
-                const responseAuthor = await fetch(
-                    import.meta.env.VITE_API_URL + "/users/" + authorId,
-                    {
-                        mode: "cors",
-                    },
-                );
-                const responsePosts = await fetch(
-                    import.meta.env.VITE_API_URL +
-                        "/users/" +
-                        authorId +
-                        "/posts",
-                    {
-                        mode: "cors",
-                    },
-                );
-                if (!responseAuthor.ok) {
-                    throw new Error(
-                        `Response status: ${responseAuthor.status}`,
-                    );
-                }
-                if (!responsePosts.ok) {
-                    throw new Error(`Response status: ${responsePosts.status}`);
-                }
-                const resultAuthor = await responseAuthor.json();
-                const resultPosts = await responsePosts.json();
-                setAuthor(resultAuthor);
-                setPosts(resultPosts);
-            } catch (err) {
-                console.error(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        dataFetch();
-    }, [authorId]);
-
-    if (loading) {
+    if (postsLoading || usersLoading) {
         return (
             <article className="loading">
                 <h1>⠀</h1>

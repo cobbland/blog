@@ -1,32 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router";
+import { UsersContext } from "../context";
 
 export default function Authors() {
-    const [authors, setAuthors] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function dataFetch() {
-            try {
-                const response = await fetch(
-                    import.meta.env.VITE_API_URL + "/users",
-                    {
-                        mode: "cors",
-                    },
-                );
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                const result = await response.json();
-                setAuthors(result);
-            } catch (err) {
-                console.error(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        dataFetch();
-    }, []);
+    const { data: users, loading } = useContext(UsersContext);
 
     if (loading) {
         return (
@@ -43,7 +20,7 @@ export default function Authors() {
         <article>
             <h1>Authors</h1>
             <ul>
-                {authors
+                {users
                     .filter((user) => user.author == true)
                     .map((author) => (
                         <li key={author.id}>

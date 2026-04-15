@@ -1,46 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router";
+import { PostsContext, UsersContext } from "../context";
 
 export default function Posts() {
-    const [posts, setPosts] = useState(null);
-    const [users, setUsers] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { data: posts, loading: postsLoading } = useContext(PostsContext);
+    const { data: users, loading: usersLoading } = useContext(UsersContext);
 
-    useEffect(() => {
-        async function dataFetch() {
-            try {
-                const response = await fetch(
-                    import.meta.env.VITE_API_URL + "/posts",
-                    {
-                        mode: "cors",
-                    },
-                );
-                const responseUsers = await fetch(
-                    import.meta.env.VITE_API_URL + "/users",
-                    {
-                        mode: "cors",
-                    },
-                );
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                if (!responseUsers.ok) {
-                    throw new Error(`Response status: ${responseUsers.status}`);
-                }
-                const result = await response.json();
-                const resultUsers = await responseUsers.json();
-                setPosts(result);
-                setUsers(resultUsers);
-            } catch (err) {
-                console.error(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        dataFetch();
-    }, []);
-
-    if (loading) {
+    if (postsLoading || usersLoading) {
         return (
             <article className="loading">
                 <h1>⠀</h1>

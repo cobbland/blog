@@ -10,8 +10,16 @@ export default function Posts() {
         data: [],
         error: null,
     });
-    const { data: posts, loading: postsLoading } = useContext(PostsContext);
-    const { data: users, loading: usersLoading } = useContext(UsersContext);
+    const {
+        data: posts,
+        loading: postsLoading,
+        error: postsError,
+    } = useContext(PostsContext);
+    const {
+        data: users,
+        loading: usersLoading,
+        error: usersError,
+    } = useContext(UsersContext);
     const { postId } = useParams();
     const post = posts?.find((post) => post.id == postId);
     const author = users?.find((user) => user.id == post?.authorId);
@@ -45,6 +53,24 @@ export default function Posts() {
                 <div>
                     <p>⠀</p>
                 </div>
+            </article>
+        );
+    }
+
+    if (postsError || usersError) {
+        return (
+            <article className="error">
+                <h1>Uh oh...</h1>
+                <p>Error: {postsError.message || usersError.message}</p>
+            </article>
+        );
+    }
+
+    if (!post || !author) {
+        return (
+            <article>
+                <h1>Uh oh...</h1>
+                <p>No such post.</p>
             </article>
         );
     }

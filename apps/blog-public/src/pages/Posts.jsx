@@ -3,8 +3,16 @@ import { Link } from "react-router";
 import { PostsContext, UsersContext } from "../context";
 
 export default function Posts() {
-    const { data: posts, loading: postsLoading } = useContext(PostsContext);
-    const { data: users, loading: usersLoading } = useContext(UsersContext);
+    const {
+        data: posts,
+        loading: postsLoading,
+        error: postsError,
+    } = useContext(PostsContext);
+    const {
+        data: users,
+        loading: usersLoading,
+        error: usersError,
+    } = useContext(UsersContext);
 
     if (postsLoading || usersLoading) {
         return (
@@ -13,6 +21,24 @@ export default function Posts() {
                 <ul>
                     <li>⠀</li>
                 </ul>
+            </article>
+        );
+    }
+
+    if (postsError || usersError) {
+        return (
+            <article className="error">
+                <h1>Posts</h1>
+                <p>Error: {postsError.message || usersError.message}</p>
+            </article>
+        );
+    }
+
+    if (!posts) {
+        return (
+            <article>
+                <h1>Posts</h1>
+                <p>There are no posts yet.</p>
             </article>
         );
     }

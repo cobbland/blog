@@ -4,8 +4,16 @@ import { Link } from "react-router";
 import { UsersContext, PostsContext } from "../context";
 
 export default function Author() {
-    const { data: posts, loading: postsLoading } = useContext(PostsContext);
-    const { data: users, loading: usersLoading } = useContext(UsersContext);
+    const {
+        data: posts,
+        loading: postsLoading,
+        error: postsError,
+    } = useContext(PostsContext);
+    const {
+        data: users,
+        loading: usersLoading,
+        error: usersError,
+    } = useContext(UsersContext);
     const { authorId } = useParams();
     const author = users?.find((user) => user.id == authorId);
 
@@ -16,6 +24,33 @@ export default function Author() {
                 <div>
                     <p>⠀</p>
                 </div>
+            </article>
+        );
+    }
+
+    if (postsError || usersError) {
+        return (
+            <article className="error">
+                <h1>Uh oh...</h1>
+                <p>Error: {postsError.message || usersError.message}</p>
+            </article>
+        );
+    }
+
+    if (!author) {
+        return (
+            <article>
+                <h1>Uh oh...</h1>
+                <p>No such author.</p>
+            </article>
+        );
+    }
+
+    if (!posts) {
+        return (
+            <article>
+                <h1>author.username</h1>
+                <p>This author hasn't made any posts yet.</p>
             </article>
         );
     }

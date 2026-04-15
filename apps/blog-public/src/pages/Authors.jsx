@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { UsersContext } from "../context";
 
 export default function Authors() {
-    const { data: users, loading } = useContext(UsersContext);
+    const { data: users, loading, error } = useContext(UsersContext);
 
     if (loading) {
         return (
@@ -12,6 +12,24 @@ export default function Authors() {
                 <ul>
                     <li>⠀</li>
                 </ul>
+            </article>
+        );
+    }
+
+    if (error) {
+        return (
+            <article className="error">
+                <h1>Uh oh...</h1>
+                <p>Error: {error.message}</p>
+            </article>
+        );
+    }
+
+    if (!users) {
+        return (
+            <article>
+                <h1>Authors</h1>
+                <p>There are no authors yet.</p>
             </article>
         );
     }

@@ -9,24 +9,17 @@ import { useState, useEffect } from "react";
 import { PostsContext, UsersContext } from "./context";
 
 export default function App() {
-    const [loading, setLoading] = useState(true);
-    const [posts, setPosts] = useState([loading]);
-    const [users, setUsers] = useState([loading]);
+    const [posts, setPosts] = useState({ loading: true, data: null });
+    const [users, setUsers] = useState({ loading: true, data: null });
 
     useEffect(() => {
         async function dataFetch() {
             try {
                 const responsePosts = await fetch(
                     import.meta.env.VITE_API_URL + "/posts",
-                    {
-                        mode: "cors",
-                    },
                 );
                 const responseUsers = await fetch(
                     import.meta.env.VITE_API_URL + "/users",
-                    {
-                        mode: "cors",
-                    },
                 );
                 if (!responsePosts.ok) {
                     throw new Error(`Response status: ${responsePosts.status}`);
@@ -34,14 +27,12 @@ export default function App() {
                 if (!responseUsers.ok) {
                     throw new Error(`Response status: ${responseUsers.status}`);
                 }
-                const result = await responsePosts.json();
+                const resultPosts = await responsePosts.json();
                 const resultUsers = await responseUsers.json();
-                setPosts([loading].concat(result));
-                setUsers([loading].concat(resultUsers));
+                setPosts({ loading: false, data: resultPosts });
+                setUsers({ loading: false, data: resultUsers });
             } catch (err) {
                 console.error(err.message);
-            } finally {
-                setLoading(false);
             }
         }
         dataFetch();

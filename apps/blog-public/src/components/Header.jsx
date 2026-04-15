@@ -4,8 +4,8 @@ import { PostsContext, UsersContext } from "../context";
 
 export default function Header({ siteName }) {
     const path = useLocation().pathname;
-    const posts = useContext(PostsContext);
-    const users = useContext(UsersContext);
+    const { data: posts, loading } = useContext(PostsContext);
+    const { data: users } = useContext(UsersContext);
 
     function createBreadcrumbs(path) {
         const pathParts = path.split("/").filter((part) => part.length >= 1);
@@ -27,8 +27,13 @@ export default function Header({ siteName }) {
         return pathParts;
     }
 
-    if (posts.loading) {
-        return <Link to="/">{siteName}</Link>;
+    if (loading) {
+        return (
+            <header>
+                <Link to="/">{siteName}</Link>
+                <span className="breadcrumbs loading"> {">"} ⠀</span>
+            </header>
+        );
     }
 
     return (

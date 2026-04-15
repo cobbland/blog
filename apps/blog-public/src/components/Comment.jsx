@@ -3,8 +3,10 @@ import { Link } from "react-router";
 import { UsersContext } from "../context";
 
 export default function Comment({ comment }) {
-    const users = useContext(UsersContext);
+    const { data: users, loading } = useContext(UsersContext);
     const author = users?.find((user) => user.id == comment.authorId);
+
+    if (loading) return <span className="loading">⠀</span>;
 
     return (
         <>

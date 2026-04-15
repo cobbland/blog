@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import Comments from "../components/Comments";
+import Markdown from "react-markdown";
 
 export default function Posts() {
     const [post, setPost] = useState(null);
@@ -81,7 +82,9 @@ export default function Posts() {
                     <Link to={"/authors/" + author.id}>{author.username}</Link>{" "}
                     on {new Date(post.createdAt).toLocaleDateString()}
                 </span>
-                <div>{post.content}</div>
+                <div>
+                    <Markdown>{post.content}</Markdown>
+                </div>
             </article>
             {comments && <Comments comments={comments} postId={postId} />}
         </>

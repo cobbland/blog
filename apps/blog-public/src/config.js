@@ -1,4 +1,4 @@
-const siteData = {
+export const siteData = {
     siteName: "Blog",
     copyright: {
         name: "CC BY-SA 4.0",
@@ -10,5 +10,3 @@ const siteData = {
         { title: "authors", link: "/authors" },
     ],
 };
-
-export { siteData };

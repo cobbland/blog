@@ -9,30 +9,40 @@ import { useState, useEffect } from "react";
 import { PostsContext, UsersContext } from "./context";
 
 export default function App() {
-    const [posts, setPosts] = useState({ loading: true, data: null });
-    const [users, setUsers] = useState({ loading: true, data: null });
+    const [posts, setPosts] = useState({
+        loading: true,
+        data: [],
+        error: null,
+    });
+    const [users, setUsers] = useState({
+        loading: true,
+        data: [],
+        error: null,
+    });
 
     useEffect(() => {
         async function dataFetch() {
             try {
-                const responsePosts = await fetch(
-                    import.meta.env.VITE_API_URL + "/posts",
-                );
-                const responseUsers = await fetch(
-                    import.meta.env.VITE_API_URL + "/users",
-                );
+                const [responsePosts, responseUsers] = await Promise.all([
+                    fetch(import.meta.env.VITE_API_URL + "/posts"),
+                    fetch(import.meta.env.VITE_API_URL + "/users"),
+                ]);
                 if (!responsePosts.ok) {
                     throw new Error(`Response status: ${responsePosts.status}`);
                 }
                 if (!responseUsers.ok) {
                     throw new Error(`Response status: ${responseUsers.status}`);
                 }
-                const resultPosts = await responsePosts.json();
-                const resultUsers = await responseUsers.json();
+                const [resultPosts, resultUsers] = await Promise.all([
+                    responsePosts.json(),
+                    responseUsers.json(),
+                ]);
                 setPosts({ loading: false, data: resultPosts });
                 setUsers({ loading: false, data: resultUsers });
             } catch (err) {
                 console.error(err.message);
+                setPosts({ loading: false, error: err });
+                setUsers({ loading: false, error: err });
             }
         }
         dataFetch();

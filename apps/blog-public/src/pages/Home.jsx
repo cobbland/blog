@@ -7,7 +7,7 @@ export default function Home() {
         auth: { loading, data },
     } = useContext(AuthContext);
 
-    if (loading || !data) {
+    if (loading || !data || !data?.name || !data?.username) {
         return (
             <article>
                 <h1>{siteData.siteName}</h1>

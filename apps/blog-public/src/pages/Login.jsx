@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -9,7 +9,7 @@ export default function Login() {
         auth: { loading, data: authData },
         setAuth,
     } = useContext(AuthContext);
-
+    const navigate = useNavigate();
     const formUrl = import.meta.env.VITE_API_URL + "/auth/login";
 
     function handleUsernameChange(e) {
@@ -36,8 +36,9 @@ export default function Login() {
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
-            const result = response.json();
+            const result = await response.json();
             setAuth({ loading: false, data: result });
+            navigate(-1);
         } catch (err) {
             console.error(err.message);
             setAuth({ loading: false, error: err });

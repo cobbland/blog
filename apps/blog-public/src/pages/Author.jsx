@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router";
 import { UsersContext, PostsContext } from "../context";
+import AuthorInfo from "../components/AuthorInfo";
 
 export default function Author() {
     const {
@@ -50,6 +51,7 @@ export default function Author() {
         return (
             <article>
                 <h1>author.username</h1>
+                <AuthorInfo author={author} />
                 <p>This author hasn't made any posts yet.</p>
             </article>
         );
@@ -58,6 +60,7 @@ export default function Author() {
     return (
         <article>
             <h1>{author.username}</h1>
+            <AuthorInfo author={author} />
             <ul>
                 {posts.map((post) => (
                     <li key={post.id}>

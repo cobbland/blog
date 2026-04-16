@@ -267,6 +267,10 @@ nav a:hover {
     background-color: var(--red);
 }
 
+nav .login-out {
+    margin-left: auto;
+}
+
 /* ---------- HORIZONTAL RULE ---------- */
 hr {
     border: none;

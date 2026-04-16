@@ -20,7 +20,7 @@ export default function Comments({ comments, postId }) {
                         </li>
                     ))}
                 </ul>
-                {!loading && authData ? (
+                {!loading && authData?.username ? (
                     <CommentBox postId={postId} />
                 ) : (
                     <CommentButton postId={postId} />

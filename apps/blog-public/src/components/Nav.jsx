@@ -1,4 +1,5 @@
 import { NavLink } from "react-router";
+import UserButton from "./UserButton";
 
 export default function Nav({ pages }) {
     return (
@@ -16,6 +17,11 @@ export default function Nav({ pages }) {
                         </NavLink>
                     </li>
                 ))}
+                <ul className="login-out">
+                    <li>
+                        <UserButton />
+                    </li>
+                </ul>
             </ul>
         </nav>
     );

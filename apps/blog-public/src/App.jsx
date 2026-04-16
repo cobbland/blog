@@ -6,7 +6,8 @@ import Authors from "./pages/Authors";
 import Author from "./pages/Author";
 import Layout from "./Layout";
 import { useState, useEffect } from "react";
-import { PostsContext, UsersContext } from "./context";
+import { PostsContext, UsersContext, AuthContext } from "./context";
+import Login from "./pages/Login";
 
 export default function App() {
     const [posts, setPosts] = useState({
@@ -15,6 +16,11 @@ export default function App() {
         error: null,
     });
     const [users, setUsers] = useState({
+        loading: true,
+        data: [],
+        error: null,
+    });
+    const [auth, setAuth] = useState({
         loading: true,
         data: [],
         error: null,
@@ -48,19 +54,47 @@ export default function App() {
         dataFetch();
     }, []);
 
+    useEffect(() => {
+        async function userAuth() {
+            try {
+                const response = await fetch(
+                    import.meta.env.VITE_API_URL + "/auth",
+                    {
+                        credentials: "include",
+                    },
+                );
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const result = await response.json();
+                setAuth({ loading: false, data: result });
+            } catch (err) {
+                console.log(err);
+                setAuth({ loading: false, error: err });
+            }
+        }
+        userAuth();
+    }, []);
+
     return (
-        <PostsContext value={posts}>
-            <UsersContext value={users}>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        <Route index element={<Home />} />
-                        <Route path="/posts" element={<Posts />} />
-                        <Route path="/posts/:postId" element={<Post />} />
-                        <Route path="/authors" element={<Authors />} />
-                        <Route path="/authors/:authorId" element={<Author />} />
-                    </Route>
-                </Routes>
-            </UsersContext>
-        </PostsContext>
+        <AuthContext value={{ auth, setAuth }}>
+            <PostsContext value={posts}>
+                <UsersContext value={users}>
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
+                            <Route index element={<Home />} />
+                            <Route path="/posts" element={<Posts />} />
+                            <Route path="/posts/:postId" element={<Post />} />
+                            <Route path="/authors" element={<Authors />} />
+                            <Route
+                                path="/authors/:authorId"
+                                element={<Author />}
+                            />
+                            <Route path="/login" element={<Login />} />
+                        </Route>
+                    </Routes>
+                </UsersContext>
+            </PostsContext>
+        </AuthContext>
     );
 }

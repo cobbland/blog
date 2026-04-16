@@ -1,18 +1,31 @@
 import Comment from "./Comment";
 import CommentButton from "./CommentButton";
+import { AuthContext } from "../context";
+import { useContext } from "react";
+import { CommentBox } from "./CommentBox";
 
 export default function Comments({ comments, postId }) {
+    const {
+        auth: { loading, data: authData },
+    } = useContext(AuthContext);
+
     return (
         <details className="comments">
             <summary>Comments</summary>
-            <ul>
-                {comments.map((comment) => (
-                    <li key={comment.id} className="comment">
-                        <Comment comment={comment} />
-                    </li>
-                ))}
-            </ul>
-            <CommentButton postId={postId} />
+            <div className="comments-inner">
+                <ul>
+                    {comments.map((comment) => (
+                        <li key={comment.id} className="comment">
+                            <Comment comment={comment} />
+                        </li>
+                    ))}
+                </ul>
+                {!loading && authData ? (
+                    <CommentBox postId={postId} />
+                ) : (
+                    <CommentButton postId={postId} />
+                )}
+            </div>
         </details>
     );
 }

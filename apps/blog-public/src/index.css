@@ -373,21 +373,18 @@ details.comments summary:hover {
 
 details.comments[open] summary {
     border-bottom: 2px solid var(--gray-light);
-    margin-bottom: 1rem;
     background-color: var(--gray-light);
 }
 
 details.comments ul,
 details.comments ol,
 details.comments p {
-    margin: 0.5rem 0 1rem 0;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding: 0;
+    margin: 0;
     list-style-type: none;
 }
 
-details.comments li {
-    margin: 0.5rem 0;
+details.comments * {
     color: var(--gray-dark);
 }
 
@@ -395,8 +392,14 @@ details.comments li .info {
     margin-left: 0;
     margin-right: 0.4em;
 }
-.comments .button {
-    margin: 0 1.5rem 1rem;
+
+details.comments .button {
+    color: var(--white);
+    margin-top: 0.4rem;
+}
+
+.comments-inner {
+    padding: 1rem 1.5rem;
 }
 
 /* ---------- RESPONSIVE ADJUSTMENTS ---------- */

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../context";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 
 export default function UserButton() {
     const {
@@ -41,5 +41,5 @@ export default function UserButton() {
         );
     }
 
-    return <Link to={"/login"}>login</Link>;
+    return <NavLink to={"/login"}>login</NavLink>;
 }

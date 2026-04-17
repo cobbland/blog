@@ -4,7 +4,7 @@ import { AuthContext } from "../context";
 import { useContext } from "react";
 import { CommentBox } from "./CommentBox";
 
-export default function Comments({ comments, postId }) {
+export default function Comments({ comments, postId, fetchComments }) {
     const {
         auth: { loading, data: authData },
     } = useContext(AuthContext);
@@ -21,7 +21,7 @@ export default function Comments({ comments, postId }) {
                     ))}
                 </ul>
                 {!loading && authData?.username ? (
-                    <CommentBox postId={postId} />
+                    <CommentBox postId={postId} fetchComments={fetchComments} />
                 ) : (
                     <CommentButton postId={postId} />
                 )}

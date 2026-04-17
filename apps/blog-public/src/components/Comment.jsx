@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router";
 import { UsersContext } from "../context";
+import Markdown from "react-markdown";
 
 export default function Comment({ comment }) {
     const { data: users, loading } = useContext(UsersContext);
@@ -19,7 +20,7 @@ export default function Comment({ comment }) {
                 )}{" "}
                 on {new Date(comment.createdAt).toLocaleDateString()}
             </span>
-            {comment.content}
+            <Markdown>{comment.content}</Markdown>
         </>
     );
 }

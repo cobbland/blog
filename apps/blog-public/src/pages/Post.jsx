@@ -24,27 +24,25 @@ export default function Posts() {
     const post = posts?.find((post) => post.id == postId);
     const author = users?.find((user) => user.id == post?.authorId);
 
-    useEffect(() => {
-        async function fetchComments() {
-            try {
-                const response = await fetch(
-                    import.meta.env.VITE_API_URL +
-                        "/posts/" +
-                        postId +
-                        "/comments",
-                );
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                const result = await response.json();
-                setComments({ loading: false, data: result });
-            } catch (err) {
-                console.error(err.message);
-                setComments({ loading: false, error: err });
+    async function fetchComments() {
+        try {
+            const response = await fetch(
+                import.meta.env.VITE_API_URL + "/posts/" + postId + "/comments",
+            );
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
             }
+            const result = await response.json();
+            setComments({ loading: false, data: result });
+        } catch (err) {
+            console.error(err.message);
+            setComments({ loading: false, error: err });
         }
+    }
+
+    useEffect(() => {
         fetchComments();
-    }, [postId]);
+    }, []);
 
     if (postsLoading || usersLoading) {
         return (
@@ -89,7 +87,11 @@ export default function Posts() {
                 </div>
             </article>
             {comments.data && !comments.loading ? (
-                <Comments comments={comments.data} postId={postId} />
+                <Comments
+                    comments={comments.data}
+                    fetchComments={fetchComments}
+                    postId={postId}
+                />
             ) : (
                 ""
             )}

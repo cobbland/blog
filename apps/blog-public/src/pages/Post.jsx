@@ -42,7 +42,7 @@ export default function Posts() {
 
     useEffect(() => {
         fetchComments();
-    }, []);
+    });
 
     if (postsLoading || usersLoading) {
         return (

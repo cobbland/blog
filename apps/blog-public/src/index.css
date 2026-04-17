@@ -392,10 +392,6 @@ details.comments p {
     list-style-type: none;
 }
 
-details.comments * {
-    color: var(--gray-dark);
-}
-
 details.comments li .info {
     margin-left: 0;
     margin-right: 0.4em;
@@ -410,7 +406,18 @@ details.comments .button {
     padding: 1rem 1.5rem;
 }
 
-details.comments form {
+.controls {
+    width: 100%;
+    background-color: var(--black);
+    margin: 0;
+    border-bottom: 4px solid var(--black);
+    border-left: 4px solid var(--black);
+    border-right: 4px solid var(--black);
+}
+
+/* ---------- FORMS ---------- */
+
+form {
     display: flex;
     flex-direction: column;
     background-color: var(--gray-light);
@@ -418,17 +425,25 @@ details.comments form {
     gap: 0.2rem;
 }
 
-details.comments form label {
+form label {
     text-transform: uppercase;
     font-size: 0.8em;
+    color: var(--gray-dark);
 }
 
-details.comments form textarea {
+form input[type="text"],
+form input[type="password"] {
+    padding: 0.2em;
+    width: 100%;
+}
+
+form textarea {
     height: 5em;
     padding: 0.4em;
+    width: 100%;
 }
 
-details.comments form input[type="submit"] {
+form input[type="submit"] {
     margin-left: auto;
     margin-top: 0.3rem;
     display: block;

@@ -1,44 +1,18 @@
 import { useContext } from "react";
 import { AuthContext } from "../context";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink } from "react-router";
 
 export default function UserButton() {
     const {
         auth: { data, loading },
-        setAuth,
     } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    async function handleLogout() {
-        try {
-            const response = await fetch(
-                import.meta.env.VITE_API_URL + "/auth/logout",
-                {
-                    method: "POST",
-                    credentials: "include",
-                },
-            );
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-            setAuth({ loading: false, data: [] });
-            navigate("/");
-        } catch (err) {
-            console.error(err.message);
-            setAuth({ loading: false, error: err });
-        }
-    }
 
     if (loading) {
         return <p>⠀</p>;
     }
 
-    if (data?.username) {
-        return (
-            <Link to={"/"} onClick={handleLogout}>
-                Logout
-            </Link>
-        );
+    if (data?.username && data?.admin) {
+        return <Link to={"/authors/" + data.id}>{data.username}</Link>;
     }
 
     return <NavLink to={"/login"}>login</NavLink>;

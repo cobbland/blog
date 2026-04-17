@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useParams } from "react-router";
-import { Link } from "react-router";
-import { UsersContext, PostsContext } from "../context";
+import { Link, useNavigate } from "react-router";
+import { UsersContext, PostsContext, AuthContext } from "../context";
 import AuthorInfo from "../components/AuthorInfo";
 
 export default function Author() {
@@ -16,7 +16,41 @@ export default function Author() {
         error: usersError,
     } = useContext(UsersContext);
     const { authorId } = useParams();
+    const {
+        setAuth,
+        auth: { data, loading: authLoading },
+    } = useContext(AuthContext);
+    const navigate = useNavigate();
     const author = users?.find((user) => user.id == authorId);
+
+    const controls = (
+        <div className="controls">
+            <Link className="button">Admin</Link>
+            <Link className="button" onClick={handleLogout}>
+                Logout
+            </Link>
+        </div>
+    );
+
+    async function handleLogout() {
+        try {
+            const response = await fetch(
+                import.meta.env.VITE_API_URL + "/auth/logout",
+                {
+                    method: "POST",
+                    credentials: "include",
+                },
+            );
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            setAuth({ loading: false, data: [] });
+            navigate("/");
+        } catch (err) {
+            console.error(err.message);
+            setAuth({ loading: false, error: err });
+        }
+    }
 
     if (postsLoading || usersLoading) {
         return (
@@ -50,6 +84,7 @@ export default function Author() {
     if (!posts) {
         return (
             <article>
+                {!authLoading && data && author.id == data.id ? controls : ""}
                 <h1>author.username</h1>
                 <AuthorInfo author={author} />
                 <p>This author hasn't made any posts yet.</p>
@@ -59,6 +94,7 @@ export default function Author() {
 
     return (
         <article>
+            {!authLoading && data && author.id == data.id ? controls : ""}
             <h1>{author.username}</h1>
             <AuthorInfo author={author} />
             <ul>

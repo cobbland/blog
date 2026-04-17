@@ -19,7 +19,7 @@ export default function Authors() {
     if (error) {
         return (
             <article className="error">
-                <h1>Uh oh...</h1>
+                <h1>Authors</h1>
                 <p>Error: {error.message}</p>
             </article>
         );

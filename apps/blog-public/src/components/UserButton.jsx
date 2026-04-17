@@ -35,9 +35,9 @@ export default function UserButton() {
 
     if (data?.username) {
         return (
-            <form action={handleLogout}>
-                <input type="submit" value="logout" />
-            </form>
+            <Link to={"/"} onClick={handleLogout}>
+                Logout
+            </Link>
         );
     }
 

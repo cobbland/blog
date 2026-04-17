@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router";
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [formError, setFormError] = useState(null);
     const {
         auth: { loading, data: authData },
         setAuth,
@@ -34,6 +35,8 @@ export default function Login() {
                 }),
             });
             if (!response.ok) {
+                const errorData = await response.json();
+                setFormError(errorData);
                 throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();
@@ -42,6 +45,8 @@ export default function Login() {
         } catch (err) {
             console.error(err.message);
             setAuth({ loading: false, error: err });
+            setPassword("");
+            setUsername("");
         }
     }
 
@@ -61,6 +66,7 @@ export default function Login() {
     return (
         <article>
             <h1>Login</h1>
+            {formError && <p className="error">{formError.errors}</p>}
             <form action={handleFormSubmit}>
                 <label>
                     Username:{" "}

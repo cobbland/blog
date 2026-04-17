@@ -1,17 +1,19 @@
 import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router";
 import { AuthContext } from "../context";
-import { Link, useNavigate } from "react-router";
 
-export default function Login() {
+export default function SignUp() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [repeatPass, setRepeatPass] = useState("");
+    const [name, setName] = useState("");
     const [formError, setFormError] = useState(null);
     const {
         auth: { loading, data: authData },
         setAuth,
     } = useContext(AuthContext);
     const navigate = useNavigate();
-    const formUrl = import.meta.env.VITE_API_URL + "/auth/login";
+    const formUrl = import.meta.env.VITE_API_URL + "/users";
 
     function handleUsernameChange(e) {
         setUsername(e.target.value);
@@ -21,7 +23,27 @@ export default function Login() {
         setPassword(e.target.value);
     }
 
+    function handleRepeatPassChange(e) {
+        setRepeatPass(e.target.value);
+    }
+
+    function handleNameChange(e) {
+        setName(e.target.value);
+    }
+
+    function handleError(error) {
+        if (error.path == "password") {
+            return "Password must be at least eight characters long with one of each of the following: uppercase letter, lowercase letter, number, symbol.";
+        } else {
+            return error.msg;
+        }
+    }
+
     async function handleFormSubmit() {
+        if (password != repeatPass) {
+            setFormError({ errors: "passwords must match" });
+            return;
+        }
         try {
             const response = await fetch(formUrl, {
                 method: "POST",
@@ -32,30 +54,34 @@ export default function Login() {
                 body: JSON.stringify({
                     username: username,
                     password: password,
+                    name: name || null,
                 }),
             });
             if (!response.ok) {
                 const errorData = await response.json();
                 setFormError(errorData);
+                console.log(errorData);
                 throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();
             setAuth({ loading: false, data: result });
-            navigate(-1);
+            navigate("/login");
         } catch (err) {
-            console.error(err.message);
+            console.error(err);
             setAuth({ loading: false, error: err });
             setPassword("");
             setUsername("");
+            setRepeatPass("");
+            setName("");
         }
     }
 
     if (!loading && authData?.name) {
         return (
             <article>
-                <h1>Login</h1>
+                <h1>Signup</h1>
                 <p>
-                    You're already logged in,{" "}
+                    You already have an account,{" "}
                     {authData?.name || authData.username}.
                 </p>
             </article>
@@ -64,8 +90,11 @@ export default function Login() {
 
     return (
         <article>
-            <h1>Login</h1>
-            {formError && <p className="error">{formError.errors}</p>}
+            <h1>Signup</h1>
+            {formError &&
+                formError.errors.map((error, index) => (
+                    <p key={index}>{handleError(error)}</p>
+                ))}
             <form action={handleFormSubmit}>
                 <label htmlFor="username">
                     Username:{" "}
@@ -85,17 +114,40 @@ export default function Login() {
                         type="password"
                         name="password"
                         id="password"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                         required
                         value={password}
                         onChange={handlePasswordChange}
                     />
                 </label>
-                <input type="submit" value="Login" />
+                <label htmlFor="repeatPass">
+                    Retype Password:{" "}
+                    <input
+                        type="password"
+                        name="repeatPass"
+                        id="repeatPass"
+                        autoComplete="new-password"
+                        required
+                        value={repeatPass}
+                        onChange={handleRepeatPassChange}
+                    />
+                </label>
+                <label htmlFor="name">
+                    Name:{" "}
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        autoComplete="name"
+                        value={name}
+                        onChange={handleNameChange}
+                    />
+                </label>
+                <input type="submit" value="signup" />
             </form>
             <p>
-                Don't have an account?{" "}
-                <Link to={"/signup"}>Sign up for one!</Link>
+                Already have an account?{" "}
+                <Link to={"/login"}>Login instead!</Link>
             </p>
         </article>
     );

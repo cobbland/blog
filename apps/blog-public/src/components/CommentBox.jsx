@@ -60,8 +60,8 @@ export function CommentBox({ postId, fetchComments }) {
                     {loading ? "" : `Commenting as ${data.username}`}
                 </label>
                 <textarea
-                    name=""
-                    id=""
+                    name="comment-box"
+                    id="comment-box"
                     value={comment}
                     onChange={handleCommentChange}
                 ></textarea>

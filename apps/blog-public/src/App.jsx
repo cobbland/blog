@@ -8,6 +8,7 @@ import Layout from "./Layout";
 import { useState, useEffect } from "react";
 import { PostsContext, UsersContext, AuthContext } from "./context";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 export default function App() {
     const [posts, setPosts] = useState({
@@ -91,6 +92,7 @@ export default function App() {
                                 element={<Author />}
                             />
                             <Route path="/login" element={<Login />} />
+                            <Route path="/signup" element={<SignUp />} />
                         </Route>
                     </Routes>
                 </UsersContext>

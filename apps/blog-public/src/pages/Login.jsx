@@ -66,7 +66,12 @@ export default function Login() {
         <article>
             <h1>Login</h1>
             {formError && <p className="error">{formError.errors}</p>}
-            <form action={handleFormSubmit}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleFormSubmit();
+                }}
+            >
                 <label htmlFor="username">
                     Username:{" "}
                     <input

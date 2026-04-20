@@ -55,7 +55,12 @@ export function CommentBox({ postId, fetchComments }) {
     return (
         <div>
             {formError && <p className="error">{formError}</p>}
-            <form action={handleFormSubmit}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleFormSubmit();
+                }}
+            >
                 <label htmlFor="comment-box">
                     {loading ? "" : `Commenting as ${data.username}`}
                 </label>

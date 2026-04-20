@@ -1,8 +1,9 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router";
-import { AuthContext } from "../context";
+import { AuthContext, UsersContext } from "../context";
 
 export default function SignUp() {
+    const { data: users } = useContext(UsersContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPass, setRepeatPass] = useState("");
@@ -10,7 +11,6 @@ export default function SignUp() {
     const [formError, setFormError] = useState(null);
     const {
         auth: { loading, data: authData },
-        setAuth,
     } = useContext(AuthContext);
     const navigate = useNavigate();
     const formUrl = import.meta.env.VITE_API_URL + "/users";
@@ -31,17 +31,21 @@ export default function SignUp() {
         setName(e.target.value);
     }
 
-    function handleError(error) {
-        if (error.path == "password") {
-            return "Password must be at least eight characters long with one of each of the following: uppercase letter, lowercase letter, number, symbol.";
-        } else {
-            return error.msg;
-        }
-    }
-
     async function handleFormSubmit() {
-        if (password != repeatPass) {
-            setFormError({ errors: "passwords must match" });
+        if (password !== repeatPass) {
+            setFormError({
+                errors: ["passwords must match"],
+            });
+            setPassword("");
+            setRepeatPass("");
+            return;
+        }
+        if (users?.find((user) => username == user.username)) {
+            setFormError({
+                errors: ["username must be unique"],
+            });
+            setPassword("");
+            setRepeatPass("");
             return;
         }
         try {
@@ -59,24 +63,23 @@ export default function SignUp() {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                setFormError(errorData);
+                setFormError({
+                    errors: [
+                        "Username must be unique and password must be at least eight characters long with one of each of the following: uppercase letter, lowercase letter, number, symbol.",
+                    ],
+                });
                 console.log(errorData);
                 throw new Error(`Response status: ${response.status}`);
             }
-            const result = await response.json();
-            setAuth({ loading: false, data: result });
-            navigate("/login");
+            navigate("/");
         } catch (err) {
             console.error(err);
-            setAuth({ loading: false, error: err });
             setPassword("");
-            setUsername("");
             setRepeatPass("");
-            setName("");
         }
     }
 
-    if (!loading && authData?.name) {
+    if (!loading && authData?.username) {
         return (
             <article>
                 <h1>Signup</h1>
@@ -91,11 +94,13 @@ export default function SignUp() {
     return (
         <article>
             <h1>Signup</h1>
-            {formError &&
-                formError.errors.map((error, index) => (
-                    <p key={index}>{handleError(error)}</p>
-                ))}
-            <form action={handleFormSubmit}>
+            {formError && <p className="error">{formError.errors}</p>}
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleFormSubmit();
+                }}
+            >
                 <label htmlFor="username">
                     Username:{" "}
                     <input

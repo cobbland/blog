@@ -8,7 +8,8 @@
         "apps/blog-public"
     ],
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "conc 'npm run dev --workspace=blog-api' 'npm run dev --workspace=blog-public' 'npm run dev --workspace=blog-admin'"
     },
     "repository": {
         "type": "git",
@@ -21,5 +22,8 @@
     "bugs": {
         "url": "https://github.com/cobbland/blog/issues"
     },
-    "homepage": "https://github.com/cobbland/blog#readme"
+    "homepage": "https://github.com/cobbland/blog#readme",
+    "devDependencies": {
+        "concurrently": "^9.2.1"
+    }
 }

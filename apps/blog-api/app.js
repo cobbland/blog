@@ -10,6 +10,9 @@ const bcrypt = require("bcryptjs");
 
 require("dotenv/config");
 const port = process.env.PORT || 3000;
+const originsArray = process.env.CLIENT_URL.split(" ").map(
+    (reg) => new RegExp(reg),
+);
 
 const routes = require("./routes");
 
@@ -18,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
     cors({
-        origin: new RegExp(process.env.CLIENT_URL),
+        origin: originsArray,
         credentials: true,
     }),
 );

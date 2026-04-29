@@ -4,6 +4,10 @@ const controller = require("../controllers/post");
 const auth = require("../middleware/auth");
 const validator = require("../middleware/validators");
 const commentRouter = require("./comment");
+const draftRouter = require("./draft");
+
+// merge in drafts router
+router.use("/drafts", draftRouter);
 
 // Merge in comments router
 router.use("/:postId/comments", commentRouter);

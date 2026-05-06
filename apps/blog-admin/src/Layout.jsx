@@ -1,9 +1,11 @@
 import { Link, NavLink, Outlet } from "react-router";
+import { siteData } from "@blog/shared/data/config";
+
 export default function Layout() {
     return (
         <>
             <header>
-                <Link to="/">Blog Admin</Link>
+                <Link to="/">{siteData.siteName} Admin</Link>
             </header>
             <nav className="nav-top">
                 <ul>

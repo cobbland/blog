@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { useParams } from "react-router";
 import { Link, useNavigate } from "react-router";
-import { UsersContext, PostsContext, AuthContext } from "../context";
+import { UsersContext, PostsContext } from "../context";
+import { AuthContext } from "@blog/shared";
 import AuthorInfo from "../components/AuthorInfo";
 
 export default function Author() {

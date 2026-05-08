@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router";
-import { siteData } from "@blog/shared/data/config";
+import { siteData, Footer } from "@blog/shared";
+import Nav from "./components/Nav";
 
 export default function Layout() {
     return (
@@ -7,30 +8,11 @@ export default function Layout() {
             <header>
                 <Link to="/">{siteData.siteName} Admin</Link>
             </header>
-            <nav className="nav-top">
-                <ul>
-                    <li>
-                        <NavLink to="/">Home</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/posts">Posts</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/comments">Comments</NavLink>
-                    </li>
-                    <ul className="login-out">
-                        <li>
-                            <NavLink to="/login">Login</NavLink>
-                        </li>
-                    </ul>
-                </ul>
-            </nav>
+            <Nav pages={siteData.adminPages} />
             <main>
-                <article>
-                    <Outlet />
-                </article>
+                <Outlet />
             </main>
-            <footer></footer>
+            <Footer copyright={siteData.copyright} />
         </>
     );
 }

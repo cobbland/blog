@@ -4,18 +4,32 @@ import Layout from "./Layout";
 import Post from "./pages/Post";
 import Posts from "./pages/Posts";
 import Comments from "./pages/Comments";
-import Login from "./pages/Login";
+import { useEffect, useState } from "react";
+import { userAuth, AuthContext, Login } from "@blog/shared";
+
 function App() {
+    const [auth, setAuth] = useState({
+        loading: true,
+        data: [],
+        error: null,
+    });
+
+    useEffect(() => {
+        userAuth(setAuth);
+    }, []);
+
     return (
-        <Routes>
-            <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="/post" element={<Post />} />
-                <Route path="/posts" element={<Posts />} />
-                <Route path="/comments" element={<Comments />} />
-                <Route path="/login" element={<Login />} />
-            </Route>
-        </Routes>
+        <AuthContext value={{ auth, setAuth }}>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="/post" element={<Post />} />
+                    <Route path="/posts" element={<Posts />} />
+                    <Route path="/comments" element={<Comments />} />
+                    <Route path="/login" element={<Login />} />
+                </Route>
+            </Routes>
+        </AuthContext>
     );
 }
 

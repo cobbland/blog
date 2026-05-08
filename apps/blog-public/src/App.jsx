@@ -6,9 +6,9 @@ import Authors from "./pages/Authors";
 import Author from "./pages/Author";
 import Layout from "./Layout";
 import { useState, useEffect } from "react";
-import { PostsContext, UsersContext, AuthContext } from "./context";
-import Login from "./pages/Login";
+import { PostsContext, UsersContext } from "./context";
 import SignUp from "./pages/SignUp";
+import { userAuth, AuthContext, Login, dataFetch } from "@blog/shared";
 
 export default function App() {
     const [posts, setPosts] = useState({
@@ -28,53 +28,11 @@ export default function App() {
     });
 
     useEffect(() => {
-        async function dataFetch() {
-            try {
-                const [responsePosts, responseUsers] = await Promise.all([
-                    fetch(import.meta.env.VITE_API_URL + "/posts"),
-                    fetch(import.meta.env.VITE_API_URL + "/users"),
-                ]);
-                if (!responsePosts.ok) {
-                    throw new Error(`Response status: ${responsePosts.status}`);
-                }
-                if (!responseUsers.ok) {
-                    throw new Error(`Response status: ${responseUsers.status}`);
-                }
-                const [resultPosts, resultUsers] = await Promise.all([
-                    responsePosts.json(),
-                    responseUsers.json(),
-                ]);
-                setPosts({ loading: false, data: resultPosts });
-                setUsers({ loading: false, data: resultUsers });
-            } catch (err) {
-                console.error(err.message);
-                setPosts({ loading: false, error: err });
-                setUsers({ loading: false, error: err });
-            }
-        }
-        dataFetch();
+        dataFetch(setPosts, setUsers);
     }, []);
 
     useEffect(() => {
-        async function userAuth() {
-            try {
-                const response = await fetch(
-                    import.meta.env.VITE_API_URL + "/auth",
-                    {
-                        credentials: "include",
-                    },
-                );
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                const result = await response.json();
-                setAuth({ loading: false, data: result });
-            } catch (err) {
-                console.log(err);
-                setAuth({ loading: false, error: err });
-            }
-        }
-        userAuth();
+        userAuth(setAuth);
     }, []);
 
     return (

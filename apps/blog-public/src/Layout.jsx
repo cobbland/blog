@@ -1,8 +1,7 @@
 import { Outlet, Link } from "react-router";
-import Footer from "./components/Footer";
+import { Footer, siteData } from "@blog/shared";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
-import { siteData } from "@blog/shared/data/config";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function Layout() {

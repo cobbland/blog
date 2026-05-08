@@ -1,6 +1,6 @@
 import Comment from "./Comment";
 import CommentButton from "./CommentButton";
-import { AuthContext } from "../context";
+import { AuthContext } from "@blog/shared";
 import { useContext } from "react";
 import { CommentBox } from "./CommentBox";
 

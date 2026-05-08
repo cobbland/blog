@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router";
-import { AuthContext, UsersContext } from "../context";
+import { UsersContext } from "../context";
+import { AuthContext } from "@blog/shared";
 
 export default function SignUp() {
     const { data: users } = useContext(UsersContext);

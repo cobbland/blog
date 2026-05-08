@@ -9,7 +9,7 @@ export const siteData = {
         { title: "posts", link: "/posts" },
         { title: "authors", link: "/authors" },
     ],
-    adminPaged: [
+    adminPages: [
         { title: "home", link: "/" },
         { title: "posts", link: "/posts" },
         { title: "comments", link: "/comments" },

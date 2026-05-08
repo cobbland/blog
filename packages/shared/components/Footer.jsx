@@ -1,4 +1,4 @@
-export default function Footer({ copyright }) {
+export function Footer({ copyright }) {
     return (
         <footer>
             <a href="#top">TOP</a>

@@ -33,10 +33,6 @@ export default function UserButton() {
         return <p>⠀</p>;
     }
 
-    if (data?.username && data?.admin) {
-        return <Link to={"/authors/" + data.id}>{data.username}</Link>;
-    }
-
     if (data?.username) {
         return <Link onClick={handleLogout}>logout</Link>;
     }

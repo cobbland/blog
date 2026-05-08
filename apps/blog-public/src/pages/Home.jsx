@@ -1,6 +1,5 @@
 import { useContext } from "react";
-import { siteData } from "../config";
-import { AuthContext } from "../context";
+import { AuthContext, siteData } from "@blog/shared";
 
 export default function Home() {
     const {

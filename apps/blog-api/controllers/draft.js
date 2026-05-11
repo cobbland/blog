@@ -1,7 +1,7 @@
 const { prisma } = require("../lib/prisma.js");
 const { validationResult } = require("express-validator");
 
-async function getDrafts() {
+async function getDrafts(req, res, next) {
     try {
         const posts = await prisma.post.findMany({
             where: {
@@ -18,7 +18,7 @@ async function getDrafts() {
     }
 }
 
-async function getDraft() {
+async function getDraft(req, res, next) {
     try {
         const post = await prisma.post.findUnique({
             where: {

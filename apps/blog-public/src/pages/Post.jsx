@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router";
 import Comments from "../components/Comments";
 import Markdown from "react-markdown";
 import { PostsContext, UsersContext } from "../context";
+import { fetchComments } from "@blog/shared";
 
 export default function Posts() {
     const [comments, setComments] = useState({
@@ -24,25 +25,9 @@ export default function Posts() {
     const post = posts?.find((post) => post.id == postId);
     const author = users?.find((user) => user.id == post?.authorId);
 
-    async function fetchComments() {
-        try {
-            const response = await fetch(
-                import.meta.env.VITE_API_URL + "/posts/" + postId + "/comments",
-            );
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-            const result = await response.json();
-            setComments({ loading: false, data: result });
-        } catch (err) {
-            console.error(err.message);
-            setComments({ loading: false, error: err });
-        }
-    }
-
     useEffect(() => {
-        fetchComments();
-    });
+        fetchComments(import.meta.env.VITE_API_URL, postId, setComments);
+    }, [postId]);
 
     if (postsLoading || usersLoading) {
         return (
@@ -89,7 +74,7 @@ export default function Posts() {
             {comments.data && !comments.loading ? (
                 <Comments
                     comments={comments.data}
-                    fetchComments={fetchComments}
+                    setComments={setComments}
                     postId={postId}
                 />
             ) : (

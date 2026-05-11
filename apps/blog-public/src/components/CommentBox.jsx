@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "@blog/shared";
+import { AuthContext, fetchComments } from "@blog/shared";
 
-export function CommentBox({ postId, fetchComments }) {
+export function CommentBox({ postId, setComments }) {
     const {
         auth: { data, loading },
     } = useContext(AuthContext);
@@ -33,7 +33,11 @@ export function CommentBox({ postId, fetchComments }) {
                 throw new Error(`Response status: ${response.status}`);
             }
             setComment("");
-            await fetchComments();
+            await fetchComments(
+                import.meta.env.VITE_API_URL,
+                postId,
+                setComments,
+            );
         } catch (err) {
             console.error(err.message);
             setComment("");

@@ -4,7 +4,7 @@ import { AuthContext } from "@blog/shared";
 import { useContext } from "react";
 import { CommentBox } from "./CommentBox";
 
-export default function Comments({ comments, postId, fetchComments }) {
+export default function Comments({ comments, setComments, postId }) {
     const {
         auth: { loading, data: authData },
     } = useContext(AuthContext);
@@ -23,7 +23,7 @@ export default function Comments({ comments, postId, fetchComments }) {
                         : "No comments yet."}
                 </ul>
                 {!loading && authData?.username ? (
-                    <CommentBox postId={postId} fetchComments={fetchComments} />
+                    <CommentBox postId={postId} setComments={setComments} />
                 ) : (
                     <CommentButton postId={postId} />
                 )}

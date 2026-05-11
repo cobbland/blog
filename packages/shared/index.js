@@ -4,3 +4,4 @@ export { Footer } from "./components/Footer";
 export { siteData } from "./data/config";
 export { Login } from "./pages/Login";
 export { dataFetch } from "./functions/dataFetch";
+export { fetchComments } from "./functions/fetchComments";

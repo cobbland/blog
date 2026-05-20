@@ -13,5 +13,6 @@ export const siteData = {
         { title: "home", link: "/" },
         { title: "posts", link: "/posts" },
         { title: "comments", link: "/comments" },
+        { title: "users", link: "/users" },
     ],
 };

@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import Post from "./pages/Post";
 import Posts from "./pages/Posts";
 import Comments from "./pages/Comments";
+import Users from "./pages/Users";
 import { useEffect, useState } from "react";
 import { userAuth, AuthContext, Login } from "@blog/shared";
 
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/posts" element={<Posts />} />
                     <Route path="/posts/:postId" element={<Post />} />
                     <Route path="/comments" element={<Comments />} />
+                    <Route path="/users" element={<Users />} />
                     <Route path="/login" element={<Login />} />
                 </Route>
             </Routes>

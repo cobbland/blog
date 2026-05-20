@@ -30,7 +30,7 @@ model Post {
   content   String?
   published Boolean   @default(false) 
   createdAt DateTime  @default(now())
-  author    User      @relation(fields: [authorId], references: [id]) 
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade) 
   authorId  Int
   comments  Comment[]
 }
@@ -39,10 +39,10 @@ model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   createdAt DateTime @default(now())
-  author    User?    @relation(fields: [authorId], references: [id]) 
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: Cascade) 
   authorId  Int?
   guestName String?
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
 }
 

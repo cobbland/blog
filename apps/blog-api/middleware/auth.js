@@ -8,7 +8,7 @@ function requireAuth(req, res, next) {
 }
 
 function requireSameUser(req, res, next) {
-    if (req.user.id != req.params.userId) {
+    if (req.user.id != req.params.userId && !req.user.admin) {
         return res.status(401).json({ errors: ["Unauthorized"] });
     }
     next();

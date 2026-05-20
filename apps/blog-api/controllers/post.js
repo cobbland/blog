@@ -78,11 +78,6 @@ async function putPost(req, res, next) {
 
 async function deletePost(req, res, next) {
     try {
-        const comments = await prisma.comment.deleteMany({
-            where: {
-                postId: +req.params.postId,
-            },
-        });
         const post = await prisma.post.delete({
             where: {
                 id: +req.params.postId,

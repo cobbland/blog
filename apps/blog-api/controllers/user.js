@@ -11,7 +11,7 @@ async function getUsers(req, res, next) {
                 password: true,
             },
             orderBy: {
-                username: "desc",
+                username: "asc",
             },
         });
         res.send(users);
@@ -70,28 +70,16 @@ async function postUser(req, res, next) {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const users = await prisma.user.findMany();
-        if (users.length < 1) {
-            const user = await prisma.user.create({
-                data: {
-                    username: username,
-                    password: hashedPassword,
-                    name: name || null,
-                    author: true,
-                    admin: true,
-                },
-            });
-        } else {
-            const user = await prisma.user.create({
-                data: {
-                    username: username,
-                    password: hashedPassword,
-                    name: name || null,
-                    author: author === authorPass ? true : false,
-                    admin: admin === adminPass ? true : false,
-                },
-            });
-        }
-        const { password: _password, ...userWithoutPassword } = user;
+        const user = await prisma.user.create({
+            data: {
+                username: username,
+                password: hashedPassword,
+                name: name || null,
+                author: users.length < 1 ? true : author === authorPass,
+                admin: users.length < 1 ? true : admin === adminPass,
+            },
+        });
+        const { password: _password, ...userWithoutPassword } = user; // Bug here? "user not defined" TKTK
         return res.json(userWithoutPassword);
     } catch (err) {
         return next(err);
@@ -111,13 +99,9 @@ async function putUser(req, res, next) {
         if (value !== undefined) {
             if (key === "password") {
                 userData[key] = await bcrypt.hash(value, 10);
-            } else if (key === "author") {
-                if (value === authorPass) {
-                    userData[key] = true;
-                }
-            } else if (key === "admin") {
-                if (value === adminPass) {
-                    userData[key] = true;
+            } else if (key === "author" || key === "admin") {
+                if (req.user.admin) {
+                    userData[key] = value;
                 }
             } else {
                 userData[key] = value;
@@ -127,7 +111,7 @@ async function putUser(req, res, next) {
     try {
         const user = await prisma.user.update({
             where: {
-                id: +req.user.id,
+                id: +req.params.userId,
             },
             data: userData,
         });
@@ -142,7 +126,7 @@ async function deleteUser(req, res, next) {
     try {
         const user = await prisma.user.delete({
             where: {
-                id: +req.user.id,
+                id: +req.params.userId,
             },
         });
         const { password: _password, ...userWithoutPassword } = user;
